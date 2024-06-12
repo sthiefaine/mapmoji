@@ -1,16 +1,4 @@
-interface Column {
-  emoji: string;
-  space: number;
-  lat: string;
-  long: string;
-}
-
-interface Row {
-  row: number;
-  columns: Column[];
-}
-
-export type MapMojiType = Row[];
+import { MapMojiType } from "../mapmoji";
 
 export const brazilMap2Json: MapMojiType = [
   {

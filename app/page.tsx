@@ -1,9 +1,10 @@
-"use server";
 import { Weather } from "@/components/(server)/weather/weather";
 import styles from "./page.module.css";
 import { getMapMoji } from "./actions/weather/weather.actions";
-import { MapMojiType, brazilMap2Json } from "@/data/brazilTopoJson";
 import { Footer } from "@/components/footer/footer";
+import { Selector } from "@/components/selector/selector";
+import { MapMojiType } from "@/data/mapmoji";
+import { brazilMap2Json } from "@/data/country/brazil";
 
 export default async function Home() {
   const resultData = await getMapMoji("brazil");
@@ -15,9 +16,9 @@ export default async function Home() {
     <div className={styles.app}>
       <div className={styles.header}>
         <h1 className={styles.title}>Weather MapMoji 🗺️</h1>
-
-        <p className={styles.subtitle}>Previsão no Brasil 🇧🇷</p>
       </div>
+
+      <Selector />
       <Weather emojiMap={emojiMap} />
       <Footer time={resultData?.time} timeKey={resultData?.key} />
     </div>

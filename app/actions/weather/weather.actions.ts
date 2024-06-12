@@ -1,5 +1,5 @@
 "use server";
-import { MapMojiType } from "@/data/brazilTopoJson";
+import { MapMojiType } from "@/data/mapmoji";
 import prisma from "@/lib/prisma";
 
 export async function getMapMoji(country: string) {

@@ -1,26 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MapMojiType, brazilMap2Json } from "@/data/brazilTopoJson";
 import { getWeatherEmoji } from "@/helpers/open-meteo";
 import { addMapMoji } from "@/app/actions/weather/weather.actions";
 import { revalidatePath } from "next/cache";
-
-type Country = {
-  name: string;
-  mapData: any;
-  timeZone: string;
-  updateHours: string[];
-  countryCodeLanguage: string;
-};
-
-const countriesList: Country[] = [
-  {
-    name: "brazil",
-    mapData: brazilMap2Json,
-    timeZone: "America/Sao_Paulo",
-    updateHours: ["6", "11", "17", "22"],
-    countryCodeLanguage: "pt-BR",
-  },
-];
+import { Country, MapMojiType, countriesList } from "@/data/mapmoji";
 
 const isUpdateHourForCountry = (country: Country) => {
   const { timeZone, updateHours, countryCodeLanguage } = country;
