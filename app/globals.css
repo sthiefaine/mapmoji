@@ -31,3 +31,16 @@ body {
     text-wrap: balance;
   }
 }
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}

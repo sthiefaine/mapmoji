@@ -1,0 +1,72 @@
+/* reset.css */
+/* Styles de réinitialisation pour harmoniser les navigateurs */
+
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd,
+dt,
+fieldset,
+legend,
+input,
+button,
+select,
+textarea {
+  margin: 0;
+  padding: 0;
+}
+
+/* Réinitialisation de la bordure */
+button,
+input {
+  border: none;
+}
+
+/* Réinitialisation de la police de caractères et de la taille de police */
+body,
+button,
+input,
+select,
+textarea {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+/* Réinitialisation du style de liste */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Réinitialisation de la couleur de fond et de la couleur du texte */
+body {
+  background-color: white;
+  color: black;
+}
+
+/* Réinitialisation du lien non souligné */
+a {
+  text-decoration: none;
+}
+
+/* Réinitialisation des éléments de formulaire */
+button,
+input,
+select,
+textarea {
+  outline: none;
+}
+
+/* Réinitialisation de la hauteur de ligne */
+p {
+  line-height: 1.5;
+}
