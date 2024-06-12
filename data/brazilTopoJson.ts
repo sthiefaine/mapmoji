@@ -10,7 +10,7 @@ interface Row {
   columns: Column[];
 }
 
-type BrazilMap = Row[];
+export type BrazilMap = Row[];
 
 export const brazilMap2Json: BrazilMap = [
   {
