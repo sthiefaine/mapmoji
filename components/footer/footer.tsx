@@ -11,25 +11,38 @@ export function Footer({ time, timeKey }: FooterProps) {
     <footer className={styles.footer}>
       <div className={styles.element}>
         <p>
-          dev{" "}
           <a
             href="http://thiefaine.dev"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Thiefaine
+            made by Thiefaine
           </a>
         </p>
         <p>
-          {" "}
-          weather api <a></a>
+          <a
+            href="https://open-meteo.com/en/docs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open-Meteo API
+          </a>
         </p>
       </div>
       {
         <div className={styles.element}>
           <p>
-            update:{" "}
-            {time?.toLocaleDateString() + " " + time?.toLocaleTimeString()}
+            Update:{" "}
+            {time?.toLocaleDateString("fr-FR", {
+              year: "2-digit",
+              month: "numeric",
+              day: "numeric",
+            }) +
+              " " +
+              time?.toLocaleTimeString("fr-FR", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
           </p>
         </div>
       }
