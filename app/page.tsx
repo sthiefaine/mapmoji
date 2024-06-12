@@ -1,11 +1,13 @@
+"use server";
 import { Weather } from "@/components/(server)/weather/weather";
 import styles from "./page.module.css";
 import { getMapMoji } from "./actions/weather/weather.actions";
-import { BrazilMap, brazilMap2Json } from "@/data/brazilTopoJson";
+import { MapMojiType, brazilMap2Json } from "@/data/brazilTopoJson";
+import { Footer } from "@/components/footer/footer";
 
 export default async function Home() {
   const resultData = await getMapMoji("brazil");
-  const emojiMap: BrazilMap = resultData
+  const emojiMap: MapMojiType = resultData
     ? JSON.parse(resultData.object)
     : brazilMap2Json;
 
@@ -17,38 +19,7 @@ export default async function Home() {
         <p className={styles.subtitle}>Previsão no Brasil 🇧🇷</p>
       </div>
       <Weather emojiMap={emojiMap} />
-      <footer className={styles.footer}>
-        <div className={styles.element}>
-          <p>
-            dev{" "}
-            <a
-              href="http://thiefaine.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Thiefaine
-            </a>
-          </p>
-          <p>
-            {" "}
-            weather api <a></a>
-          </p>
-        </div>
-        {resultData?.key && (
-          <div className={styles.element}>
-            <p>
-              {resultData?.time.toLocaleDateString("pt-BR", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-              })}
-            </p>
-            <p>{resultData?.key}</p>
-          </div>
-        )}
-      </footer>
+      <Footer time={resultData?.time} timeKey={resultData?.key} />
     </div>
   );
 }

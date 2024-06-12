@@ -10,15 +10,15 @@ interface Row {
   columns: Column[];
 }
 
-export type BrazilMap = Row[];
+export type MapMojiType = Row[];
 
-export const brazilMap2Json: BrazilMap = [
+export const brazilMap2Json: MapMojiType = [
   {
     row: 1,
     columns: [
       {
         emoji: "🌴",
-        space: 26,
+        space: 23,
         lat: "2.6473501786395612",
         long: "-61.59726806038616",
       },
@@ -35,7 +35,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 15,
+        space: 12,
         lat: "-0.30491720132170336",
         long: "-67.14656819667309",
       },
@@ -85,7 +85,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 15,
+        space: 12,
         lat: "-1.497816897697194",
         long: "-69.89475082290518",
       },
@@ -142,7 +142,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 10,
+        space: 8,
         lat: "-4.68459705273605",
         long: "-71.71279693789981",
       },
@@ -225,7 +225,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 9,
+        space: 7,
         lat: "-8.055293280555045",
         long: "-71.201696136042",
       },
@@ -308,7 +308,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 15,
+        space: 13,
         lat: "-10.091013738006348",
         long: "-67.49707469809417",
       },
@@ -379,7 +379,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 27,
+        space: 25,
         lat: "-14.817933686805125",
         long: "-59.74599835537696",
       },
@@ -432,7 +432,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 30,
+        space: 28,
         lat: "-17.50383468603454",
         long: "-57.247593271893486",
       },
@@ -479,7 +479,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 34,
+        space: 32,
         lat: "-19.78178375148812",
         long: "-55.59944169955846",
       },
@@ -520,7 +520,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 34,
+        space: 32,
         lat: "-22.18913129525301",
         long: "-55.15084939142826",
       },
@@ -555,7 +555,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 38,
+        space: 36,
         lat: "-24.576698956082353",
         long: "-53.44594482007894",
       },
@@ -578,7 +578,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 41,
+        space: 39,
         lat: "-26.96091373482945",
         long: "-53.34759714290737",
       },
@@ -596,7 +596,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 36,
+        space: 34,
         lat: "-29.36651965142351",
         long: "-55.388152818923864",
       },
@@ -620,7 +620,7 @@ export const brazilMap2Json: BrazilMap = [
     columns: [
       {
         emoji: "🌴",
-        space: 42,
+        space: 40,
         lat: "-32.12214581499418",
         long: "-52.86918328105435",
       },
@@ -628,7 +628,7 @@ export const brazilMap2Json: BrazilMap = [
   },
 ];
 
-export const brazilMapJson: BrazilMap = [
+export const brazilMapJson: MapMojiType = [
   {
     row: 1,
     columns: [

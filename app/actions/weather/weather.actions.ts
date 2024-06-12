@@ -1,8 +1,16 @@
-import { BrazilMap } from "@/data/brazilTopoJson";
+"use server";
+import { MapMojiType } from "@/data/brazilTopoJson";
 import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
 
-export async function addMapMoji(mapMoji: BrazilMap, country: string) {
+export async function getMapMoji(country: string) {
+  const mapMoji = await prisma.weather.findFirst({
+    where: { country: country.toLowerCase() },
+    orderBy: { time: "desc" },
+  });
+  return mapMoji;
+}
+
+export async function addMapMoji(mapMoji: MapMojiType, country: string) {
   const today = new Date();
   const currentHour = today.getHours();
 
@@ -15,6 +23,7 @@ export async function addMapMoji(mapMoji: BrazilMap, country: string) {
   } else {
     mapKey = "evening";
   }
+
   try {
     const result = await prisma.weather.upsert({
       where: { country: country.toLowerCase() },
@@ -32,7 +41,6 @@ export async function addMapMoji(mapMoji: BrazilMap, country: string) {
     });
 
     if (result) {
-      revalidatePath("/", "page");
       return {
         success: true,
       };
@@ -46,12 +54,4 @@ export async function addMapMoji(mapMoji: BrazilMap, country: string) {
   return {
     success: false,
   };
-}
-
-export async function getMapMoji(country: string) {
-  const mapMoji = await prisma.weather.findFirst({
-    where: { country: country.toLowerCase() },
-    orderBy: { time: "desc" },
-  });
-  return mapMoji;
 }

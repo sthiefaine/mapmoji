@@ -1,12 +1,12 @@
 "use server";
 
 import styles from "@/app/page.module.css";
-import { BrazilMap, brazilMap2Json } from "@/data/brazilTopoJson";
+import { MapMojiType, brazilMap2Json } from "@/data/brazilTopoJson";
 
 import { Suspense } from "react";
 
 type WeatherProps = {
-  emojiMap: BrazilMap;
+  emojiMap: MapMojiType;
 };
 
 export async function Weather({ emojiMap }: WeatherProps) {
