@@ -51,7 +51,7 @@
 
 @media screen and (min-width: 768px) {
   .map > div > span {
-    font-size: 1.2em;
+    font-size: 1.25em;
     margin: 0 3.5px;
   }
 }

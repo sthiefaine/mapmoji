@@ -16,7 +16,7 @@ export function Footer({ time, timeKey }: FooterProps) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            made by Thiefaine
+            Made by Thiefaine
           </a>
         </p>
         <p>
