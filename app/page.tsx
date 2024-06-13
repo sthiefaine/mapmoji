@@ -22,7 +22,11 @@ export default async function Home() {
       <div className={styles.header}>
         <h1 className={styles.title}> 🗺️ Weather MapMoji</h1>
       </div>
-      <Main emojiMap={emojiMap} time={resultData?.time} />
+      <Main
+        emojiMap={emojiMap}
+        time={resultData?.time}
+        country={countrySelected}
+      />
       <Footer time={resultData?.time} timeKey={resultData?.key} />
     </div>
   );

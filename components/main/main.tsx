@@ -3,18 +3,16 @@
 import styles from "./main.module.css";
 import { Selector } from "../selector/selector";
 import { Weather } from "../weather/weather";
-import { MapMojiType } from "@/data/mapmoji";
-import { useState } from "react";
+import { Country, MapMojiType } from "@/data/mapmoji";
 import html2canvas from "html2canvas";
 
 type MainProps = {
   emojiMap: MapMojiType;
   time?: Date;
+  country?: Country;
 };
 
-export function Main({ emojiMap, time }: MainProps) {
-  const [capturedImage, setCapturedImage] = useState<string>("");
-
+export function Main({ emojiMap, time, country }: MainProps) {
   const handleShareClick = () => {
     const weatherElement = document.getElementById("weather-section");
     if (!weatherElement) {
@@ -44,8 +42,29 @@ export function Main({ emojiMap, time }: MainProps) {
 
       resizedContext.drawImage(blackCanvas, 0, 0, 450, 450);
 
+      const countryText = country?.name + " " + country?.emoji;
+
+      const getLocalTime = new Intl.DateTimeFormat("fr-FR", {
+        timeZone: country?.timeZone ?? "UTC",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(time);
+
+      // Add the country and time to the canvas
+      const padding = 10;
+      resizedContext.font = "16px Arial";
+      resizedContext.fillStyle = "white";
+      resizedContext.textAlign = "right";
+
+      // Draw the text
+      const text = `${countryText}, ${getLocalTime}`;
+      resizedContext.fillText(
+        text,
+        resizedCanvas.width - padding,
+        resizedCanvas.height - padding
+      );
+
       const imgData = resizedCanvas.toDataURL("image/png");
-      setCapturedImage(imgData);
 
       const blob = dataURLToBlob(imgData);
       const file = new File([blob], "weather.png", { type: "image/png" });
