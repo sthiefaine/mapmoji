@@ -42,7 +42,8 @@ export function Main({ emojiMap, time, country }: MainProps) {
 
       resizedContext.drawImage(blackCanvas, 0, 0, 450, 450);
 
-      const countryText = country?.name + " " + country?.emoji;
+      const countryText =
+        capitalizeFirstLetter(country?.name ?? "") + " " + country?.emoji;
 
       const getLocalTime = new Intl.DateTimeFormat("fr-FR", {
         timeZone: country?.timeZone ?? "UTC",
@@ -50,19 +51,19 @@ export function Main({ emojiMap, time, country }: MainProps) {
         minute: "2-digit",
       }).format(time);
 
-      // Add the country and time to the canvas
-      const padding = 10;
-      resizedContext.font = "16px Arial";
-      resizedContext.fillStyle = "white";
-      resizedContext.textAlign = "right";
-
       // Draw the text
       const text = `${countryText}, ${getLocalTime}`;
-      resizedContext.fillText(
-        text,
-        resizedCanvas.width - padding,
-        resizedCanvas.height - padding
-      );
+      const textWidth = resizedContext.measureText(text).width;
+      const x = (resizedCanvas.width - textWidth) / 2;
+
+      const padding = 10;
+      const y = padding + 20;
+
+      resizedContext.font = "16px Arial";
+      resizedContext.fillStyle = "white";
+      resizedContext.textAlign = "left";
+
+      resizedContext.fillText(text, x, y);
 
       const imgData = resizedCanvas.toDataURL("image/png");
 
@@ -96,6 +97,10 @@ export function Main({ emojiMap, time, country }: MainProps) {
     }
 
     return new Blob([ab], { type: mimeString });
+  };
+
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
 
   return (
