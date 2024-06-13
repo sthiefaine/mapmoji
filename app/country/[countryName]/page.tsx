@@ -5,23 +5,32 @@ import { getMapMoji } from "@/app/actions/weather/weather.actions";
 import styles from "@/app/page.module.css";
 import { Footer } from "@/components/footer/footer";
 import { Main } from "@/components/main/main";
+import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
 
 export async function generateStaticParams() {
   const items = countriesList;
   return items.map((item) => ({
-    country: item.name.toLowerCase(),
-    mapData: item.mapData,
+    countryName: item.name.toLocaleLowerCase(),
   }));
 }
 
 type CountryParams = {
-  country: string;
-  mapData: MapMojiType;
+  countryName: string;
 };
 
 export default async function Country({ params }: { params: CountryParams }) {
-  const { country, mapData } = params;
-  const resultData = await getMapMoji(country);
+  const { countryName } = params;
+
+  const mapData: MapMojiType = countriesList.find(
+    (country) => country.name.toLowerCase() === countryName
+  )?.mapData;
+
+  const country = countriesList.find(
+    (country) => country.name.toLowerCase() === countryName
+  );
+
+  const resultData = await getMapMoji(countryName);
+
   const emojiMap: MapMojiType = resultData
     ? JSON.parse(resultData.object)
     : mapData;
@@ -31,8 +40,8 @@ export default async function Country({ params }: { params: CountryParams }) {
       <div className={styles.header}>
         <h1 className={styles.title}> 🗺️ Weather MapMoji</h1>{" "}
       </div>
-
-      <Main emojiMap={emojiMap} time={resultData?.time} />
+      <TimeUpdate time={resultData?.time} country={country} />
+      <Main emojiMap={emojiMap} time={resultData?.time} country={country} />
       <Footer time={resultData?.time} timeKey={resultData?.key} />
     </div>
   );

@@ -29,7 +29,7 @@ export function Footer({ time, timeKey }: FooterProps) {
           </a>
         </p>
       </div>
-      {
+      {time && (
         <div className={styles.element}>
           <p className={styles.updateTime}>
             Update:{" "}
@@ -45,7 +45,7 @@ export function Footer({ time, timeKey }: FooterProps) {
               })}
           </p>
         </div>
-      }
+      )}
     </footer>
   );
 }

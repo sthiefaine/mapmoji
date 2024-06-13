@@ -20,9 +20,8 @@ export function TimeUpdate({ time, country }: TimeUpdateProps) {
       }).format(time)
     : null;
 
-  if (!country?.updateHours || !getLocalTime) return null;
-  const lastUpdateHour = parseInt(getLocalTime.split(":")[0]);
-  const updateHours = country.updateHours.map((hour) => parseInt(hour));
+  const lastUpdateHour = parseInt(getLocalTime?.split(":")[0] ?? "0");
+  const updateHours = country?.updateHours.map((hour) => parseInt(hour)) ?? [];
 
   for (let i = 0; i < updateHours.length; i++) {
     const parsedHour = updateHours[i];

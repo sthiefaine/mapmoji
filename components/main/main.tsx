@@ -5,6 +5,7 @@ import { Selector } from "../selector/selector";
 import { Weather } from "../weather/weather";
 import { Country, MapMojiType } from "@/data/mapmoji";
 import html2canvas from "html2canvas";
+import { capitalizeFirstLetter } from "@/helpers/string";
 
 type MainProps = {
   emojiMap: MapMojiType;
@@ -68,7 +69,9 @@ export function Main({ emojiMap, time, country }: MainProps) {
       const imgData = resizedCanvas.toDataURL("image/png");
 
       const blob = dataURLToBlob(imgData);
-      const file = new File([blob], "weather.png", { type: "image/png" });
+      const file = new File([blob], `weather-${country?.name}.png`, {
+        type: "image/png",
+      });
 
       if (navigator?.share) {
         navigator
@@ -99,13 +102,13 @@ export function Main({ emojiMap, time, country }: MainProps) {
     return new Blob([ab], { type: mimeString });
   };
 
-  const capitalizeFirstLetter = (string: string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-  };
-
   return (
     <>
-      <Selector time={time} handleShareClick={handleShareClick} />
+      <Selector
+        country={country}
+        time={time}
+        handleShareClick={handleShareClick}
+      />
       <section id="weather-section" className={styles.section}>
         <Weather emojiMap={emojiMap} />
       </section>

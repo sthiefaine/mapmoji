@@ -1,4 +1,5 @@
 import { brazilMap2Json } from "./country/brazil";
+import { franceMap2Json } from "./country/france";
 
 export type Country = {
   name: string;
@@ -17,6 +18,14 @@ export const countriesList: Country[] = [
     timeZone: "America/Sao_Paulo",
     updateHours: ["6", "8", "11", "15", "17", "19", "21"],
     countryCodeLanguage: "pt-BR",
+  },
+  {
+    name: "france",
+    emoji: "🇫🇷",
+    mapData: franceMap2Json,
+    timeZone: "Europe/Paris",
+    updateHours: ["6", "8", "11", "15", "17", "19", "22"],
+    countryCodeLanguage: "fr-FR",
   },
 ];
 
