@@ -1,11 +1,12 @@
 "use client";
 
 import styles from "./main.module.css";
-import { Selector } from "../selector/selector";
+import { MainHeader } from "../mainHeader/mainHeader";
 import { Weather } from "../weather/weather";
 import { Country, MapMojiType } from "@/data/mapmoji";
 import html2canvas from "html2canvas";
 import { capitalizeFirstLetter } from "@/helpers/string";
+import { Selector } from "../selector/selector";
 
 type MainProps = {
   emojiMap: MapMojiType;
@@ -104,7 +105,7 @@ export function Main({ emojiMap, time, country }: MainProps) {
 
   return (
     <>
-      <Selector
+      <MainHeader
         country={country}
         time={time}
         handleShareClick={handleShareClick}
@@ -112,7 +113,9 @@ export function Main({ emojiMap, time, country }: MainProps) {
       <section id="weather-section" className={styles.section}>
         <Weather emojiMap={emojiMap} />
       </section>
-      <section className={styles.section}></section>
+      <section className={styles.section}>
+        <Selector country={country} />
+      </section>
     </>
   );
 }
