@@ -13,7 +13,7 @@ export const countriesList: Country[] = [
     name: "brazil",
     mapData: brazilMap2Json,
     timeZone: "America/Sao_Paulo",
-    updateHours: ["6", "8", "12", "17", "19", "21"],
+    updateHours: ["6", "9", "12", "15", "17", "19", "21"],
     countryCodeLanguage: "pt-BR",
   },
 ];

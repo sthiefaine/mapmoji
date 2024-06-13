@@ -1,15 +1,21 @@
 import styles from "./page.module.css";
 import { getMapMoji } from "./actions/weather/weather.actions";
 import { Footer } from "@/components/footer/footer";
-import { MapMojiType } from "@/data/mapmoji";
+import { MapMojiType, countriesList } from "@/data/mapmoji";
 import { brazilMap2Json } from "@/data/country/brazil";
 import { Main } from "@/components/main/main";
 
 export default async function Home() {
-  const resultData = await getMapMoji("brazil");
+  const countrySelected = countriesList.find(
+    (country) => country.name === "brazil"
+  );
+  const countryName = countrySelected?.name ?? "brazil";
+  const countryMapData = countrySelected?.mapData ?? brazilMap2Json;
+
+  const resultData = await getMapMoji(countryName);
   const emojiMap: MapMojiType = resultData
     ? JSON.parse(resultData.object)
-    : brazilMap2Json;
+    : countryMapData;
 
   return (
     <div className={styles.app}>

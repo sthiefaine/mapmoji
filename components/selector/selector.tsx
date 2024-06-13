@@ -2,18 +2,15 @@
 import { countriesList } from "@/data/mapmoji";
 import styles from "./selector.module.css";
 import { usePathname } from "next/navigation";
+import useIsClient from "@/hooks/isClient";
 
 type SelectorProps = {
   time?: Date;
   handleShareClick?: () => void;
-  capturedImage?: string;
 };
 
-export function Selector({
-  time,
-  handleShareClick,
-  capturedImage,
-}: SelectorProps) {
+export function Selector({ time, handleShareClick }: SelectorProps) {
+  const isClient = useIsClient();
   const pathname = usePathname();
   const pathNameClean =
     pathname.split("/")?.[2]?.toLowerCase()?.trim() ?? "brazil";
@@ -27,12 +24,11 @@ export function Selector({
     minute: "2-digit",
   }).format(time);
 
-  const handleWhatsAppShare = () => {
-    if (capturedImage) {
-      const url = `https://wa.me/?text=${encodeURIComponent(capturedImage)}`;
-      window.open(url, "_blank");
-    }
-  };
+  const displayShareButton = isClient
+    ? navigator?.share === undefined
+      ? "hidden"
+      : "visible"
+    : "hidden";
 
   return (
     <div className={styles.container}>
@@ -41,7 +37,11 @@ export function Selector({
         <span className={styles.time}>{getLocalTime}</span>
       </div>
       <div className={styles.element}>
-        <button className={styles.button} onClick={handleShareClick}>
+        <button
+          style={{ visibility: displayShareButton }}
+          className={styles.button}
+          onClick={handleShareClick}
+        >
           Share 📸
         </button>
       </div>

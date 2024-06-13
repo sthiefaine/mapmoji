@@ -3,9 +3,8 @@ import { MapMojiType, countriesList } from "@/data/mapmoji";
 import { getMapMoji } from "@/app/actions/weather/weather.actions";
 
 import styles from "@/app/page.module.css";
-import { Weather } from "@/components/weather/weather";
 import { Footer } from "@/components/footer/footer";
-import { Selector } from "@/components/selector/selector";
+import { Main } from "@/components/main/main";
 
 export async function generateStaticParams() {
   const items = countriesList;
@@ -33,8 +32,7 @@ export default async function Country({ params }: { params: CountryParams }) {
         <h1 className={styles.title}> 🗺️ Weather MapMoji</h1>{" "}
       </div>
 
-      <Selector time={resultData?.time} />
-      <Weather emojiMap={emojiMap} />
+      <Main emojiMap={emojiMap} time={resultData?.time} />
       <Footer time={resultData?.time} timeKey={resultData?.key} />
     </div>
   );

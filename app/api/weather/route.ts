@@ -56,10 +56,18 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
   const authHeader = req.headers.get("authorization");
 
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new Response("Unauthorized", {
-      status: 401,
-    });
+  if (forceUpdate) {
+    if (forceUpdate !== process.env.FORCE_UPDATE) {
+      return new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+  } else {
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return new Response("Unauthorized", {
+        status: 401,
+      });
+    }
   }
 
   let updatedAnyCountry = false;

@@ -50,13 +50,7 @@ export function Main({ emojiMap, time }: MainProps) {
       const blob = dataURLToBlob(imgData);
       const file = new File([blob], "weather.png", { type: "image/png" });
 
-      if (navigator.share === undefined) {
-        console.log("navigator", navigator);
-        alert("Unsupported share feature");
-        return;
-      }
-
-      if (navigator.share) {
+      if (navigator?.share) {
         navigator
           .share({
             title: "Weather Information",
@@ -87,11 +81,7 @@ export function Main({ emojiMap, time }: MainProps) {
 
   return (
     <>
-      <Selector
-        time={time}
-        handleShareClick={handleShareClick}
-        capturedImage={capturedImage}
-      />
+      <Selector time={time} handleShareClick={handleShareClick} />
       <section id="weather-section" className={styles.section}>
         <Weather emojiMap={emojiMap} />
       </section>
