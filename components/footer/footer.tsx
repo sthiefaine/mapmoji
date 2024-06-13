@@ -1,5 +1,5 @@
 "use client";
-import styles from "@/app/page.module.css";
+import styles from "./footer.module.css";
 
 type FooterProps = {
   time?: Date;
@@ -31,7 +31,7 @@ export function Footer({ time, timeKey }: FooterProps) {
       </div>
       {
         <div className={styles.element}>
-          <p>
+          <p className={styles.updateTime}>
             Update:{" "}
             {time?.toLocaleDateString("fr-FR", {
               year: "2-digit",

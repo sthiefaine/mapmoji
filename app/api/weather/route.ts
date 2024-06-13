@@ -6,12 +6,24 @@ import { Country, MapMojiType, countriesList } from "@/data/mapmoji";
 
 const isUpdateHourForCountry = (country: Country) => {
   const { timeZone, updateHours, countryCodeLanguage } = country;
-  const countryTime = new Date().toLocaleString(countryCodeLanguage, {
-    timeZone,
+  const time = new Date();
+  const formatter = new Intl.DateTimeFormat(country.countryCodeLanguage, {
+    timeZone: country.timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
   });
-  const countryDate = new Date(countryTime);
-  const currentHour = countryDate.getHours().toString();
-  return updateHours.includes(currentHour);
+  const localTimeString = formatter.format(time);
+  const [localHour] = localTimeString.split(":").map(Number);
+
+  const currentHourInCountry = localHour.toString();
+  console.log("currentHour", currentHourInCountry);
+  console.log("updateHours", updateHours);
+  console.log(
+    "updateHours.includes(currentHour)",
+    updateHours.includes(currentHourInCountry)
+  );
+  return updateHours.includes(currentHourInCountry);
 };
 
 const getEmoji = async (country: Country) => {

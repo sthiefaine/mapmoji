@@ -74,7 +74,7 @@ export function Main({ emojiMap, time, country }: MainProps) {
         navigator
           .share({
             title: "Weather Information",
-            text: "Check out this weather info!",
+            text: "weather with emoji by https://mapmoji.vercel.app/",
             files: [file],
           })
           .then(() => console.log("Share was successful."))

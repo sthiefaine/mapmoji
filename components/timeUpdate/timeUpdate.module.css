@@ -1,0 +1,25 @@
+.timeline {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 5px;
+  width: 100%;
+}
+
+.hour {
+  width: 30px;
+  height: 30px;
+  padding: 4px 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.current {
+  background-color: gray;
+}

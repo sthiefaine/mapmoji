@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "MapMoji 🗺️",
-  description: "Wheather for brazil",
+  description: "Wheather with emojis",
 };
 
 export default function RootLayout({

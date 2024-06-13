@@ -4,6 +4,7 @@ import { Footer } from "@/components/footer/footer";
 import { MapMojiType, countriesList } from "@/data/mapmoji";
 import { brazilMap2Json } from "@/data/country/brazil";
 import { Main } from "@/components/main/main";
+import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
 
 export default async function Home() {
   const countrySelected = countriesList.find(
@@ -22,6 +23,7 @@ export default async function Home() {
       <div className={styles.header}>
         <h1 className={styles.title}> 🗺️ Weather MapMoji</h1>
       </div>
+      <TimeUpdate time={resultData?.time} country={countrySelected} />
       <Main
         emojiMap={emojiMap}
         time={resultData?.time}
