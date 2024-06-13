@@ -1,8 +1,6 @@
-import { Weather } from "@/components/weather/weather";
 import styles from "./page.module.css";
 import { getMapMoji } from "./actions/weather/weather.actions";
 import { Footer } from "@/components/footer/footer";
-import { Selector } from "@/components/selector/selector";
 import { MapMojiType } from "@/data/mapmoji";
 import { brazilMap2Json } from "@/data/country/brazil";
 import { Main } from "@/components/main/main";

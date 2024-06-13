@@ -3,7 +3,17 @@ import { countriesList } from "@/data/mapmoji";
 import styles from "./selector.module.css";
 import { usePathname } from "next/navigation";
 
-export function Selector({ time }: { time?: Date }) {
+type SelectorProps = {
+  time?: Date;
+  handleShareClick?: () => void;
+  capturedImage?: string;
+};
+
+export function Selector({
+  time,
+  handleShareClick,
+  capturedImage,
+}: SelectorProps) {
   const pathname = usePathname();
   const pathNameClean =
     pathname.split("/")?.[2]?.toLowerCase()?.trim() ?? "brazil";
@@ -17,6 +27,13 @@ export function Selector({ time }: { time?: Date }) {
     minute: "2-digit",
   }).format(time);
 
+  const handleWhatsAppShare = () => {
+    if (capturedImage) {
+      const url = `https://wa.me/?text=${encodeURIComponent(capturedImage)}`;
+      window.open(url, "_blank");
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.element}>
@@ -24,7 +41,9 @@ export function Selector({ time }: { time?: Date }) {
         <span className={styles.time}>{getLocalTime}</span>
       </div>
       <div className={styles.element}>
-        <button className={styles.button}>Share 📸</button>
+        <button className={styles.button} onClick={handleShareClick}>
+          Share 📸
+        </button>
       </div>
     </div>
   );
