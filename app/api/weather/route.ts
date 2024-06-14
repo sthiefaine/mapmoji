@@ -17,12 +17,6 @@ const isUpdateHourForCountry = (country: Country) => {
   const [localHour] = localTimeString.split(":").map(Number);
 
   const currentHourInCountry = localHour.toString();
-  console.log("currentHour", currentHourInCountry);
-  console.log("updateHours", updateHours);
-  console.log(
-    "updateHours.includes(currentHour)",
-    updateHours.includes(currentHourInCountry)
-  );
   return updateHours.includes(currentHourInCountry);
 };
 
@@ -41,15 +35,15 @@ const getEmoji = async (country: Country) => {
           };
 
           const url = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&current=${params.current}`;
+          if (lat && long) {
+            const weather = await fetch(url, { cache: "no-store" }).then(
+              (res) => res.json()
+            );
 
-          const weather = await fetch(url, { cache: "no-store" }).then((res) =>
-            res.json()
-          );
+            const weatherEmoji = getWeatherEmoji(weather);
 
-          const weatherEmoji = getWeatherEmoji(weather);
-
-          col.emoji = weatherEmoji?.emoji ?? col.emoji;
-
+            col.emoji = weatherEmoji?.emoji ?? col.emoji;
+          }
           return col;
         })
       );
@@ -100,6 +94,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
         }
 
         updatedAnyCountry = true;
+        revalidatePath(`/country/${country.name.toLowerCase()}`);
       }
     }
 

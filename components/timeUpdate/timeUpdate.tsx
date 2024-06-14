@@ -17,6 +17,7 @@ export function TimeUpdate({ time, country }: TimeUpdateProps) {
         timeZone: country?.timeZone ?? "UTC",
         hour: "2-digit",
         minute: "2-digit",
+        hour12: false,
       }).format(time)
     : null;
 

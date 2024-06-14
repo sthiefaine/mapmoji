@@ -35,14 +35,20 @@ export function Main({ emojiMap, time, country }: MainProps) {
       blackContext.drawImage(canvas, 0, 0);
 
       const resizedCanvas = document.createElement("canvas");
-      resizedCanvas.width = 450;
-      resizedCanvas.height = 450;
+      resizedCanvas.width = 500;
+      resizedCanvas.height = 600;
       const resizedContext = resizedCanvas.getContext("2d");
       if (!resizedContext) {
         return;
       }
 
-      resizedContext.drawImage(blackCanvas, 0, 0, 450, 450);
+      resizedContext.drawImage(
+        blackCanvas,
+        0,
+        0,
+        resizedCanvas.width,
+        resizedCanvas.height
+      );
 
       const countryText =
         capitalizeFirstLetter(country?.name ?? "") + " " + country?.emoji;

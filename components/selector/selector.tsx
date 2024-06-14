@@ -1,6 +1,7 @@
 import { Country, countriesList } from "@/data/mapmoji";
 import styles from "./selector.module.css";
 import Link from "next/link";
+import { capitalizeFirstLetter } from "@/helpers/string";
 
 type SelectorProps = {
   country?: Country;
@@ -17,7 +18,7 @@ export function Selector({ country }: SelectorProps) {
                 country?.name === c.name ? styles.selected : ""
               }`}
             >
-              {c?.emoji} {c?.name}
+              {c?.emoji} {capitalizeFirstLetter(c?.name)}
             </button>
           </Link>
         );

@@ -16,7 +16,7 @@ export const countriesList: Country[] = [
     emoji: "🇧🇷",
     mapData: brazilMap2Json,
     timeZone: "America/Sao_Paulo",
-    updateHours: ["6", "8", "11", "15", "17", "19", "21"],
+    updateHours: ["5", "7", "9", "11", "15", "17", "19"],
     countryCodeLanguage: "pt-BR",
   },
   {
