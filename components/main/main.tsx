@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./main.module.css";
-import { MainHeader } from "../mainHeader/mainHeader";
+import { MainFooter } from "../mainFooter/mainFooter";
 import { Weather } from "../weather/weather";
 import { Country, MapMojiType } from "@/data/mapmoji";
 import html2canvas from "html2canvas";
@@ -35,8 +35,8 @@ export function Main({ emojiMap, time, country }: MainProps) {
       blackContext.drawImage(canvas, 0, 0);
 
       const resizedCanvas = document.createElement("canvas");
-      resizedCanvas.width = 500;
-      resizedCanvas.height = 600;
+      resizedCanvas.width = 400;
+      resizedCanvas.height = 500;
       const resizedContext = resizedCanvas.getContext("2d");
       if (!resizedContext) {
         return;
@@ -110,18 +110,16 @@ export function Main({ emojiMap, time, country }: MainProps) {
   };
 
   return (
-    <>
-      <MainHeader
+    <section className={styles.section}>
+      <div id="weather-section" className={styles.container}>
+        <Weather emojiMap={emojiMap} />
+      </div>
+
+      <MainFooter
         country={country}
         time={time}
         handleShareClick={handleShareClick}
       />
-      <section id="weather-section" className={styles.section}>
-        <Weather emojiMap={emojiMap} />
-      </section>
-      <section className={styles.section}>
-        <Selector country={country} />
-      </section>
-    </>
+    </section>
   );
 }

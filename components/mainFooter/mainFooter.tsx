@@ -1,9 +1,10 @@
 "use client";
 import { Country } from "@/data/mapmoji";
-import styles from "./mainHeader.module.css";
+import styles from "./mainFooter.module.css";
 import useIsClient from "@/hooks/isClient";
 import { capitalizeFirstLetter } from "@/helpers/string";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Selector } from "../selector/selector";
 
 type MainHeaderProps = {
   time?: Date;
@@ -11,7 +12,7 @@ type MainHeaderProps = {
   country?: Country;
 };
 
-export function MainHeader({
+export function MainFooter({
   time,
   handleShareClick,
   country,
@@ -26,18 +27,14 @@ export function MainHeader({
 
   return (
     <div className={styles.container}>
-      <div className={styles.element}>
-        <span className={styles.name}>
-          {capitalizeFirstLetter(country?.name ?? "") + " " + country?.emoji}
-        </span>
-      </div>
+      <Selector country={country} />
+
       <div className={styles.element}>
         <button
           style={{ visibility: displayShareButton }}
           className={styles.button}
           onClick={handleShareClick}
         >
-          <span className={styles.text}>Share</span>
           <DotLottieReact
             autoResizeCanvas
             style={{

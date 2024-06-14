@@ -29,7 +29,7 @@ export function Footer({ time, timeKey }: FooterProps) {
           </a>
         </p>
       </div>
-      {time && (
+      {time && process.env.NODE_ENV === "development" && (
         <div className={styles.element}>
           <p className={styles.updateTime}>
             Update:{" "}
