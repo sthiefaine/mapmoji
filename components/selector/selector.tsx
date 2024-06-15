@@ -12,7 +12,7 @@ export function Selector({ country }: SelectorProps) {
     <div className={styles.selector}>
       {countriesList.map((c, index) => {
         return (
-          <Link key={index} href={`/country/${c.name}`}>
+          <Link key={index} href={`/country/${c.name.toLowerCase()}`}>
             <button
               className={`${styles.button} ${
                 country?.name === c.name ? styles.selected : ""
