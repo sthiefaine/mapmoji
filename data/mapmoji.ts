@@ -9,6 +9,7 @@ export type Country = {
   timeZone: string;
   updateHours: string[];
   countryCodeLanguage: string;
+  countryCode?: string;
 };
 
 export const countriesList: Country[] = [
@@ -19,6 +20,7 @@ export const countriesList: Country[] = [
     timeZone: "America/Sao_Paulo",
     updateHours: ["5", "7", "9", "11", "15", "17", "19"],
     countryCodeLanguage: "pt-BR",
+    countryCode: "BR",
   },
   {
     name: "france",
@@ -27,6 +29,7 @@ export const countriesList: Country[] = [
     timeZone: "Europe/Paris",
     updateHours: ["6", "8", "11", "15", "17", "19", "22"],
     countryCodeLanguage: "fr-FR",
+    countryCode: "FR",
   },
   {
     name: "USA",
@@ -35,6 +38,7 @@ export const countriesList: Country[] = [
     timeZone: "America/New_York",
     updateHours: ["6", "8", "11", "15", "17", "19", "22"],
     countryCodeLanguage: "en-US",
+    countryCode: "US",
   },
 ];
 

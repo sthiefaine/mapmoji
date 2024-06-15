@@ -5,12 +5,16 @@ import { MapMojiType, countriesList } from "@/data/mapmoji";
 import { brazilMap2Json } from "@/data/country/brazil";
 import { Main } from "@/components/main/main";
 import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
+import { headers } from "next/headers";
 
 export default async function Home() {
-  const countrySelected = countriesList.find(
-    (country) => country.name === "brazil"
-  );
-  const countryName = countrySelected?.name ?? "brazil";
+  const defaultCountry = headers().get("x-country") ?? "BR";
+
+  const countrySelected =
+    countriesList.find((country) => country.countryCode === defaultCountry) ??
+    countriesList.find((country) => country.countryCode === "BR");
+
+  const countryName = countrySelected?.name ?? defaultCountry;
   const countryMapData = countrySelected?.mapData ?? brazilMap2Json;
 
   const resultData = await getMapMoji(countryName);
