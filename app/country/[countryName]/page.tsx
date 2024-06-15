@@ -6,6 +6,7 @@ import styles from "@/app/page.module.css";
 import { Footer } from "@/components/footer/footer";
 import { Main } from "@/components/main/main";
 import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
+import { Header } from "@/components/header/header";
 
 export async function generateStaticParams() {
   const items = countriesList;
@@ -37,9 +38,7 @@ export default async function Country({ params }: { params: CountryParams }) {
 
   return (
     <div className={styles.app}>
-      <div className={styles.header}>
-        <h1 className={styles.title}> 🗺️ Weather MapMoji</h1>{" "}
-      </div>
+      <Header />
       <TimeUpdate time={resultData?.time} country={country} />
       <Main emojiMap={emojiMap} time={resultData?.time} country={country} />
       <Footer time={resultData?.time} timeKey={resultData?.key} />

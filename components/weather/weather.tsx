@@ -1,8 +1,8 @@
 "use client";
 
-import styles from "@/app/page.module.css";
 import { brazilMap2Json } from "@/data/country/brazil";
 import { MapMojiType } from "@/data/mapmoji";
+import styles from "./weather.module.css";
 
 import { Suspense } from "react";
 

@@ -1,5 +1,7 @@
 "use client";
+import { Link as LinkIcon } from "lucide-react";
 import styles from "./footer.module.css";
+import Link from "next/link";
 
 type FooterProps = {
   time?: Date;
@@ -10,23 +12,26 @@ export function Footer({ time, timeKey }: FooterProps) {
   return (
     <footer className={styles.footer}>
       <div className={styles.element}>
-        <p>
-          <a
+        <p className={styles.link}>
+          {" "}
+          <LinkIcon size={12} />
+          <Link
             href="http://thiefaine.dev"
             target="_blank"
             rel="noopener noreferrer"
           >
             Made by Thiefaine
-          </a>
+          </Link>
         </p>
-        <p>
-          <a
+        <p className={styles.link}>
+          <LinkIcon size={12} />
+          <Link
             href="https://open-meteo.com/en/docs"
             target="_blank"
             rel="noopener noreferrer"
           >
             Open-Meteo API
-          </a>
+          </Link>
         </p>
       </div>
       {time && process.env.NODE_ENV === "development" && (

@@ -17,6 +17,15 @@
   width: 100%;
 }
 
+.link {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.link > svg {
+  margin-right: 5px;
+}
+
 .updateTime {
   font-size: 0.8em;
 }

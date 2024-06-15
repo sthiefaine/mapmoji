@@ -526,8 +526,8 @@ export const franceMap2Json: MapMojiType = [
       {
         emoji: "🌳",
         space: 0,
-        lat: "44.14005",
-        long: "4.06005",
+        lat: "43.60005",
+        long: "3.880530",
       },
       {
         emoji: "🌳",

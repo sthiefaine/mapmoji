@@ -6,6 +6,7 @@ import { brazilMap2Json } from "@/data/country/brazil";
 import { Main } from "@/components/main/main";
 import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
 import { headers } from "next/headers";
+import { Header } from "@/components/header/header";
 
 export default async function Home() {
   const defaultCountry = headers().get("x-country") ?? "BR";
@@ -24,9 +25,7 @@ export default async function Home() {
 
   return (
     <div className={styles.app}>
-      <div className={styles.header}>
-        <h1 className={styles.title}> 🗺️ Weather MapMoji</h1>
-      </div>
+      <Header />
       <TimeUpdate time={resultData?.time} country={countrySelected} />
       <Main
         emojiMap={emojiMap}
