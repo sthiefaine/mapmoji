@@ -2,14 +2,15 @@
 import { Country } from "@/data/mapmoji";
 import styles from "./mainFooter.module.css";
 import useIsClient from "@/hooks/isClient";
-import { capitalizeFirstLetter } from "@/helpers/string";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Selector } from "../selector/selector";
+import { Search } from "../search/search";
+import { useState } from "react";
 
 type MainHeaderProps = {
   time?: Date;
   handleShareClick?: () => void;
-  country?: Country;
+  country: Country;
 };
 
 export function MainFooter({
@@ -17,6 +18,7 @@ export function MainFooter({
   handleShareClick,
   country,
 }: MainHeaderProps) {
+  const [searchValue, setSearchValue] = useState<string>("");
   const isClient = useIsClient();
 
   const displayShareButton = isClient
@@ -27,9 +29,13 @@ export function MainFooter({
 
   return (
     <div className={styles.container}>
-      <Selector country={country} />
-
       <div className={styles.element}>
+        <Search
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          country={country}
+        />
+
         <button
           style={{ visibility: displayShareButton }}
           className={styles.button}
@@ -49,6 +55,12 @@ export function MainFooter({
           />
         </button>
       </div>
+
+      <Selector
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        country={country}
+      />
     </div>
   );
 }

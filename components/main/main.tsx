@@ -10,7 +10,7 @@ import { capitalizeFirstLetter } from "@/helpers/string";
 type MainProps = {
   emojiMap: MapMojiType;
   time?: Date;
-  country?: Country;
+  country: Country;
 };
 
 export function Main({ emojiMap, time, country }: MainProps) {

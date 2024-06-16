@@ -1,0 +1,32 @@
+.search {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+  width: 100%;
+}
+
+.input {
+  color: black;
+  width: 70%;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 1em;
+}
+
+.datalist {
+  width: 50%;
+  margin-top: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 1em;
+}
+
+.option {
+  font-size: 1em;
+  font-weight: 400;
+}

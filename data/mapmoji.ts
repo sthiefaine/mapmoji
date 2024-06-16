@@ -24,7 +24,19 @@ export type Country = {
   timeZone: string;
   updateHours: string[];
   countryCodeLanguage: string;
-  countryCode?: string;
+  countryCode: string;
+};
+
+const southUpdateHours: string[] = ["5", "7", "9", "11", "15", "17", "19"];
+const northUpdateHours: string[] = ["6", "8", "11", "15", "17", "19", "22"];
+
+export const notFoundCountry: Country = {
+  name: "notFound",
+  mapData: [],
+  timeZone: "UTC",
+  updateHours: [],
+  countryCodeLanguage: "en-US",
+  countryCode: "XX",
 };
 
 export const countriesList: Country[] = [
@@ -33,7 +45,7 @@ export const countriesList: Country[] = [
     emoji: "🇧🇷",
     mapData: brazilMap2Json,
     timeZone: "America/Sao_Paulo",
-    updateHours: ["5", "7", "9", "11", "15", "17", "19"],
+    updateHours: southUpdateHours,
     countryCodeLanguage: "pt-BR",
     countryCode: "BR",
   },
@@ -42,7 +54,7 @@ export const countriesList: Country[] = [
     emoji: "🇫🇷",
     mapData: franceMap2Json,
     timeZone: "Europe/Paris",
-    updateHours: ["6", "8", "11", "15", "17", "19", "22"],
+    updateHours: northUpdateHours,
     countryCodeLanguage: "fr-FR",
     countryCode: "FR",
   },
@@ -51,7 +63,7 @@ export const countriesList: Country[] = [
     emoji: "🇺🇸",
     mapData: usaMap2Json,
     timeZone: "America/New_York",
-    updateHours: ["6", "8", "11", "15", "17", "19", "22"],
+    updateHours: northUpdateHours,
     countryCodeLanguage: "en-US",
     countryCode: "US",
   },
@@ -60,7 +72,7 @@ export const countriesList: Country[] = [
     emoji: "🇯🇵",
     mapData: japanMap2Json,
     timeZone: "Asia/Tokyo",
-    updateHours: ["5", "7", "9", "11", "15", "17", "19"],
+    updateHours: southUpdateHours,
     countryCodeLanguage: "ja-JP",
     countryCode: "JP",
   },

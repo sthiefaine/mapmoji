@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import { getMapMoji } from "./actions/weather/weather.actions";
 import { Footer } from "@/components/footer/footer";
-import { MapMojiType, countriesList } from "@/data/mapmoji";
+import { Country, MapMojiType, countriesList } from "@/data/mapmoji";
 import { brazilMap2Json } from "@/data/country/brazil";
 import { Main } from "@/components/main/main";
 import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
@@ -11,9 +11,14 @@ import { Header } from "@/components/header/header";
 export default async function Home() {
   const defaultCountry = headers().get("x-country") ?? "BR";
 
-  const countrySelected =
+  const fallbackCountry: Country = {
+    ...countriesList[0],
+  };
+
+  const countrySelected: Country =
     countriesList.find((country) => country.countryCode === defaultCountry) ??
-    countriesList.find((country) => country.countryCode === "BR");
+    countriesList.find((country) => country.countryCode === "BR") ??
+    fallbackCountry;
 
   const countryName = countrySelected?.name ?? defaultCountry;
   const countryMapData = countrySelected?.mapData ?? brazilMap2Json;

@@ -2,17 +2,14 @@
   width: 100vw;
   padding: 10px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
+  flex-direction: column;
 }
 
 .element {
   color: white;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
-  justify-content: flex-end;
+  margin: 10px 0;
 }
 
 .button {

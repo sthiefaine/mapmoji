@@ -1,7 +1,7 @@
 "use server";
-import { MapMojiType, countriesList } from "@/data/mapmoji";
+import { MapMojiType, countriesList, notFoundCountry } from "@/data/mapmoji";
 import { getMapMoji } from "@/app/actions/weather/weather.actions";
-
+import { Country as CountryType } from "@/data/mapmoji";
 import styles from "@/app/page.module.css";
 import { Footer } from "@/components/footer/footer";
 import { Main } from "@/components/main/main";
@@ -10,6 +10,7 @@ import { Header } from "@/components/header/header";
 
 export async function generateStaticParams() {
   const items = countriesList;
+
   return items.map((item) => ({
     countryName: item.name.toLocaleLowerCase(),
   }));
@@ -40,7 +41,11 @@ export default async function Country({ params }: { params: CountryParams }) {
     <div className={styles.app}>
       <Header />
       <TimeUpdate time={resultData?.time} country={country} />
-      <Main emojiMap={emojiMap} time={resultData?.time} country={country} />
+      <Main
+        emojiMap={emojiMap}
+        time={resultData?.time}
+        country={country ?? notFoundCountry}
+      />
       <Footer time={resultData?.time} timeKey={resultData?.key} />
     </div>
   );
