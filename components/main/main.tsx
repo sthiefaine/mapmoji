@@ -6,7 +6,6 @@ import { Weather } from "../weather/weather";
 import { Country, MapMojiType } from "@/data/mapmoji";
 import html2canvas from "html2canvas";
 import { capitalizeFirstLetter } from "@/helpers/string";
-import { Selector } from "../selector/selector";
 
 type MainProps = {
   emojiMap: MapMojiType;
