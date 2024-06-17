@@ -43,11 +43,17 @@ export function Selector({
       country?.name.toLocaleLowerCase()
     );
     if (selectedCountry) {
-      selectedCountry.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      });
+      const timeoutId = setTimeout(() => {
+        selectedCountry.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      }, 800);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
     }
   }, [country]);
 

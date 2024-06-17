@@ -9,7 +9,6 @@ import {
 } from "@/data/mapmoji";
 import { brazilMap2Json } from "@/data/country/brazil";
 import { Main } from "@/components/main/main";
-import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
 import { headers } from "next/headers";
 import { Header } from "@/components/header/header";
 import { getMapMojiForDay } from "./actions/weather/weatherForDay.actions";
@@ -40,11 +39,10 @@ export default async function Home() {
 
   const timesList = resultData.map((time) => time.time);
 
-  console.log("timesList", timesList);
   return (
     <div className={styles.app}>
       <Header />
-      <TimeUpdate timesList={timesList} country={countrySelected} />
+
       <Main
         emojiMaps={emojiMaps}
         timesList={timesList}

@@ -15,25 +15,25 @@ export async function addMapMojiForDay(
   country: string
 ) {
   const mapMojiForDay = mapMoji.object;
+  const today = new Date(mapMoji.time + "Z");
 
-  const todayHour = new Date(mapMoji.time + "Z");
+  const yesterday = new Date(new Date(today).setDate(today.getDate() - 1));
 
-  console.log("todayHour", country, new Date(mapMoji.time + "Z"), todayHour);
   try {
     const result = await prisma.weatherForDay.upsert({
       where: {
         country_time: {
           country: country.toLowerCase(),
-          time: todayHour,
+          time: yesterday,
         },
       },
       update: {
-        time: todayHour,
+        time: today,
         object: JSON.stringify(mapMojiForDay),
       },
       create: {
         country: country.toLowerCase(),
-        time: todayHour,
+        time: today,
         object: JSON.stringify(mapMojiForDay),
       },
     });

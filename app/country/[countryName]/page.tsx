@@ -1,10 +1,8 @@
 "use server";
 import { MapMojiType, countriesList, notFoundCountry } from "@/data/mapmoji";
-import { getMapMoji } from "@/app/actions/weather/weather.actions";
 import styles from "@/app/page.module.css";
 import { Footer } from "@/components/footer/footer";
 import { Main } from "@/components/main/main";
-import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
 import { Header } from "@/components/header/header";
 import { getMapMojiForDay } from "@/app/actions/weather/weatherForDay.actions";
 
@@ -50,7 +48,6 @@ export default async function Country({ params }: { params: CountryParams }) {
   return (
     <div className={styles.app}>
       <Header />
-      <TimeUpdate timesList={timesList} country={country} />
       <Main
         emojiMaps={emojiMaps}
         timesList={timesList}

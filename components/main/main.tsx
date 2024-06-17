@@ -7,6 +7,7 @@ import { Country, MapMojiType } from "@/data/mapmoji";
 import html2canvas from "html2canvas";
 import { capitalizeFirstLetter } from "@/helpers/string";
 import { useEffect, useState } from "react";
+import { TimeUpdate } from "../timeUpdate/timeUpdate";
 
 type MainProps = {
   emojiMaps: MapMojiType[];
@@ -15,6 +16,7 @@ type MainProps = {
 };
 
 export function Main({ emojiMaps, timesList, country }: MainProps) {
+  const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [emojiMap, setEmojiMap] = useState<MapMojiType>([]);
 
   const currentTime = new Date();
@@ -27,10 +29,10 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
 
   useEffect(() => {
     if (emojiMaps.length > 0) {
-      const indexHour = parseInt(getHour);
+      const indexHour = selectedHour ?? parseInt(getHour);
       setEmojiMap(emojiMaps[indexHour] ?? country?.mapData);
     }
-  }, []);
+  }, [selectedHour, emojiMaps, country, getHour]);
 
   const handleShareClick = () => {
     const weatherElement = document.getElementById("weather-section");
@@ -127,16 +129,24 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
   };
 
   return (
-    <section className={styles.section}>
-      <div id="weather-section" className={styles.container}>
-        <Weather emojiMap={emojiMap} />
-      </div>
-
-      <MainFooter
+    <>
+      <TimeUpdate
+        timesList={timesList}
         country={country}
-        time={currentTime}
-        handleShareClick={handleShareClick}
+        selectedHour={selectedHour}
+        setSelectedHour={setSelectedHour}
       />
-    </section>
+      <section className={styles.section}>
+        <div id="weather-section" className={styles.container}>
+          <Weather emojiMap={emojiMap} />
+        </div>
+
+        <MainFooter
+          country={country}
+          time={currentTime}
+          handleShareClick={handleShareClick}
+        />
+      </section>
+    </>
   );
 }
