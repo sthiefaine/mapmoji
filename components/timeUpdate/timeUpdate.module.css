@@ -5,21 +5,25 @@
 
   padding: 10px 5px;
   width: 100%;
+  overflow-x: auto;
 }
 
 .hour {
-  width: 30px;
+  width: 40px;
   height: 30px;
-  padding: 4px 2px;
+  margin: 2px 5px;
+  padding: 5px 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
+  border-radius: 20%;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #fff;
+  color: #000;
+  background-color: #fff;
 }
 
 .current {
-  background-color: gray;
+  background-color: #ffea00;
+  color: black;
 }

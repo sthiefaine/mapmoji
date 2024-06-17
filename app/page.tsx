@@ -1,12 +1,18 @@
 import styles from "./page.module.css";
 import { getMapMoji } from "./actions/weather/weather.actions";
 import { Footer } from "@/components/footer/footer";
-import { Country, MapMojiType, countriesList } from "@/data/mapmoji";
+import {
+  Country,
+  MapMojiForDayType,
+  MapMojiType,
+  countriesList,
+} from "@/data/mapmoji";
 import { brazilMap2Json } from "@/data/country/brazil";
 import { Main } from "@/components/main/main";
 import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
 import { headers } from "next/headers";
 import { Header } from "@/components/header/header";
+import { getMapMojiForDay } from "./actions/weather/weatherForDay.actions";
 
 export default async function Home() {
   const defaultCountry = headers().get("x-country") ?? "BR";
@@ -23,21 +29,28 @@ export default async function Home() {
   const countryName = countrySelected?.name ?? defaultCountry;
   const countryMapData = countrySelected?.mapData ?? brazilMap2Json;
 
-  const resultData = await getMapMoji(countryName);
-  const emojiMap: MapMojiType = resultData
-    ? JSON.parse(resultData.object)
-    : countryMapData;
+  const resultData = await getMapMojiForDay(countryName);
 
+  const emojiMaps: MapMojiType[] =
+    resultData.length > 0
+      ? resultData
+          .filter((r) => r.country === countryName)
+          .map((re) => JSON.parse(re.object))
+      : [countryMapData];
+
+  const timesList = resultData.map((time) => time.time);
+
+  console.log("timesList", timesList);
   return (
     <div className={styles.app}>
       <Header />
-      <TimeUpdate time={resultData?.time} country={countrySelected} />
+      <TimeUpdate timesList={timesList} country={countrySelected} />
       <Main
-        emojiMap={emojiMap}
-        time={resultData?.time}
+        emojiMaps={emojiMaps}
+        timesList={timesList}
         country={countrySelected}
       />
-      <Footer time={resultData?.time} />
+      <Footer time={resultData[10]?.time} />
     </div>
   );
 }

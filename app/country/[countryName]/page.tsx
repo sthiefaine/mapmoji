@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer/footer";
 import { Main } from "@/components/main/main";
 import { TimeUpdate } from "@/components/timeUpdate/timeUpdate";
 import { Header } from "@/components/header/header";
+import { getMapMojiForDay } from "@/app/actions/weather/weatherForDay.actions";
 
 export async function generateStaticParams() {
   const items = countriesList;
@@ -22,30 +23,40 @@ type CountryParams = {
 export default async function Country({ params }: { params: CountryParams }) {
   const { countryName } = params;
 
+  const fallbackCountry = {
+    ...countriesList[0],
+  };
+
   const mapData: MapMojiType =
     countriesList.find((country) => country.name.toLowerCase() === countryName)
       ?.mapData ?? notFoundCountry.mapData;
 
-  const country = countriesList.find(
-    (country) => country.name.toLowerCase() === countryName
-  );
+  const country =
+    countriesList.find(
+      (country) => country.name.toLowerCase() === countryName
+    ) ?? fallbackCountry;
 
-  const resultData = await getMapMoji(countryName);
+  const resultData = await getMapMojiForDay(countryName);
 
-  const emojiMap: MapMojiType = resultData
-    ? JSON.parse(resultData.object)
-    : mapData;
+  const emojiMaps: MapMojiType[] =
+    resultData.length > 0
+      ? resultData
+          .filter((r) => r.country === countryName)
+          .map((re) => JSON.parse(re.object))
+      : [mapData];
+
+  const timesList = resultData.map((time) => time.time);
 
   return (
     <div className={styles.app}>
       <Header />
-      <TimeUpdate time={resultData?.time} country={country} />
+      <TimeUpdate timesList={timesList} country={country} />
       <Main
-        emojiMap={emojiMap}
-        time={resultData?.time}
+        emojiMaps={emojiMaps}
+        timesList={timesList}
         country={country ?? notFoundCountry}
       />
-      <Footer time={resultData?.time} />
+      <Footer time={resultData[10]?.time} />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { WeatherDataForDay, getWeatherEmoji } from "@/helpers/open-meteo";
-import { addMapMoji } from "@/app/actions/weather/weather.actions";
 import { revalidatePath } from "next/cache";
 import {
   Country,
@@ -11,9 +10,6 @@ import {
 import { addMapMojiForDay } from "@/app/actions/weather/weatherForDay.actions";
 
 const isUpdateHourForCountry = (country: Country) => {
-  const { timeZone, countryCodeLanguage } = country;
-
-  const updateHours = "0";
   const time = new Date();
   const formatter = new Intl.DateTimeFormat(country.countryCodeLanguage, {
     timeZone: country.timeZone ?? "UTC",
@@ -22,13 +18,15 @@ const isUpdateHourForCountry = (country: Country) => {
     hour12: false,
   });
   const localTimeString = formatter.format(time);
-  const localHour = localTimeString.split(":")[0];
+  const [localHour, localMinute] = localTimeString.split(":").map(Number);
 
-  return updateHours.includes(localHour);
+  return (
+    (localHour === 0 && localMinute <= 5) ||
+    (localHour === 12 && localMinute <= 40)
+  );
 };
 
 const getEmoji = async (country: Country) => {
-  console.log("getEmoji", country);
   let updatedMapForDay: MapMojiForDayType[] = Array(24)
     .fill(null)
     .map((_, i) => ({
@@ -58,7 +56,7 @@ const getEmoji = async (country: Country) => {
               longitude: long,
               uv: "uv_index,uv_index_clear_sky,",
               current: "temperature_2m,is_day,weather_code,",
-              timezone: country.timeZone ?? "auto",
+              timezone: country.timeZone ?? "UTC",
               forecast_days: "1",
             };
 
@@ -99,27 +97,49 @@ const getEmoji = async (country: Country) => {
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   const url = new URL(req.url);
+  const forceUpdate = url.searchParams.get("update");
+
+  const authHeader = req.headers.get("authorization");
+
+  if (forceUpdate) {
+    if (forceUpdate !== process.env.FORCE_UPDATE) {
+      return new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+  } else {
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+  }
 
   let updatedAnyCountry = false;
 
   try {
     for (const country of countriesList) {
-      const updatedMap = await getEmoji(country);
+      if (
+        isUpdateHourForCountry(country) ||
+        forceUpdate === process.env.FORCE_UPDATE
+      ) {
+        const updatedMap = await getEmoji(country);
 
-      for (const updatedMapForDay of updatedMap) {
-        const newMapmoji = await addMapMojiForDay(
-          updatedMapForDay,
-          country.name
-        );
-        if (!newMapmoji.success) {
-          return new NextResponse(`error with: ${country}`, {
-            status: 500,
-          });
+        for (const updatedMapForDay of updatedMap) {
+          const newMapmoji = await addMapMojiForDay(
+            updatedMapForDay,
+            country.name
+          );
+          if (!newMapmoji.success) {
+            return new NextResponse(`error with: ${country}`, {
+              status: 500,
+            });
+          }
         }
-      }
 
-      updatedAnyCountry = true;
-      revalidatePath(`/country/${country.name.toLowerCase()}`);
+        updatedAnyCountry = true;
+        revalidatePath(`/country/${country.name.toLowerCase()}`);
+      }
     }
 
     if (!updatedAnyCountry) {

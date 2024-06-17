@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     longitude: "3.8763",
     uv: "uv_index_clear_sky,",
     current: "temperature_2m,is_day,weather_code,",
-    timezone: "auto",
+    timezone: "America/New_York",
     forecast_days: "1",
   };
 

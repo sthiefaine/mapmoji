@@ -1,56 +1,49 @@
 "use client";
 
+import { useEffect } from "react";
 import styles from "./timeUpdate.module.css";
 
 import { Country } from "@/data/mapmoji";
 
 type TimeUpdateProps = {
-  country?: Country;
-  time?: Date;
+  country: Country;
+  timesList: Date[];
 };
 
-export function TimeUpdate({ time, country }: TimeUpdateProps) {
-  let lastUpdateTime: number = 0;
+export function TimeUpdate({ timesList, country }: TimeUpdateProps) {
+  const currentTime = new Date();
+  const getLocalTime = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: country?.timeZone ?? "UTC",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(currentTime);
+  const getHour = getLocalTime.split(":")[0];
 
-  const getLocalTime = time
-    ? new Intl.DateTimeFormat("fr-FR", {
-        timeZone: country?.timeZone ?? "UTC",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }).format(time)
-    : null;
-
-  const lastUpdateHour = parseInt(getLocalTime?.split(":")[0] ?? "0");
-  const updateHours = country?.updateHours.map((hour) => parseInt(hour)) ?? [];
-
-  for (let i = 0; i < updateHours.length; i++) {
-    const parsedHour = updateHours[i];
-
-    if (lastUpdateTime !== 0) {
-      break;
+  useEffect(() => {
+    if (!country || !getHour) return;
+    const selectedHour = document.getElementById(getHour);
+    if (selectedHour) {
+      selectedHour.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
     }
-
-    if (lastUpdateHour === parsedHour) {
-      lastUpdateTime = parsedHour;
-      break;
-    } else if (lastUpdateHour < parsedHour) {
-      lastUpdateTime = updateHours[i - 1];
-      break;
-    }
-  }
+  }, [country, getHour]);
 
   return (
     <div className={styles.timeline}>
-      {country?.updateHours.map((hour, index) => {
+      {timesList.map((time, index) => {
+        const localTimeHour = time.toISOString().split("T")[1].split(":")[0];
         return (
           <span
-            key={hour}
+            id={localTimeHour}
+            key={time.toLocaleDateString() + index}
             className={`${styles.hour} ${
-              lastUpdateTime === parseInt(hour) ? styles.current : ""
+              getHour === localTimeHour ? styles.current : ""
             }`}
           >
-            {hour}h
+            {localTimeHour}h
           </span>
         );
       })}

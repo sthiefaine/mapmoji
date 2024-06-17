@@ -6,14 +6,32 @@ import { Weather } from "../weather/weather";
 import { Country, MapMojiType } from "@/data/mapmoji";
 import html2canvas from "html2canvas";
 import { capitalizeFirstLetter } from "@/helpers/string";
+import { useEffect, useState } from "react";
 
 type MainProps = {
-  emojiMap: MapMojiType;
-  time?: Date;
+  emojiMaps: MapMojiType[];
+  timesList: Date[];
   country: Country;
 };
 
-export function Main({ emojiMap, time, country }: MainProps) {
+export function Main({ emojiMaps, timesList, country }: MainProps) {
+  const [emojiMap, setEmojiMap] = useState<MapMojiType>([]);
+
+  const currentTime = new Date();
+  const getLocalTime = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: country?.timeZone ?? "UTC",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(currentTime);
+  const getHour = getLocalTime.split(":")[0];
+
+  useEffect(() => {
+    if (emojiMaps.length > 0) {
+      const indexHour = parseInt(getHour);
+      setEmojiMap(emojiMaps[indexHour] ?? country?.mapData);
+    }
+  }, []);
+
   const handleShareClick = () => {
     const weatherElement = document.getElementById("weather-section");
     if (!weatherElement) {
@@ -56,7 +74,7 @@ export function Main({ emojiMap, time, country }: MainProps) {
         timeZone: country?.timeZone ?? "UTC",
         hour: "2-digit",
         minute: "2-digit",
-      }).format(time);
+      }).format(currentTime);
 
       // Draw the text
       const text = `${countryText}, ${getLocalTime}`;
@@ -116,7 +134,7 @@ export function Main({ emojiMap, time, country }: MainProps) {
 
       <MainFooter
         country={country}
-        time={time}
+        time={currentTime}
         handleShareClick={handleShareClick}
       />
     </section>

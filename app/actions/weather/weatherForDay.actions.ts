@@ -3,9 +3,9 @@ import { MapMojiForDayType } from "@/data/mapmoji";
 import prisma from "@/lib/prisma";
 
 export async function getMapMojiForDay(country: string) {
-  const mapMoji = await prisma.weatherForDay.findFirst({
+  const mapMoji = await prisma.weatherForDay.findMany({
     where: { country: country.toLowerCase() },
-    orderBy: { time: "desc" },
+    orderBy: { time: "asc" },
   });
   return mapMoji;
 }
@@ -15,8 +15,10 @@ export async function addMapMojiForDay(
   country: string
 ) {
   const mapMojiForDay = mapMoji.object;
-  const todayHour = new Date(mapMoji.time);
 
+  const todayHour = new Date(mapMoji.time + "Z");
+
+  console.log("todayHour", country, new Date(mapMoji.time + "Z"), todayHour);
   try {
     const result = await prisma.weatherForDay.upsert({
       where: {

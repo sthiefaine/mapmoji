@@ -40,7 +40,12 @@ const getEmoji = async (country: Country) => {
               (res) => res.json()
             );
 
-            const weatherEmoji = getWeatherEmoji(weather);
+            const currentWeatherData = {
+              is_day: weather.current.is_day,
+              weather_code: weather.current.weather_code,
+            };
+
+            const weatherEmoji = getWeatherEmoji(currentWeatherData);
 
             col.emoji = weatherEmoji?.emoji ?? col.emoji;
           }
