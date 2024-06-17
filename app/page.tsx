@@ -37,7 +37,7 @@ export default async function Home() {
         time={resultData?.time}
         country={countrySelected}
       />
-      <Footer time={resultData?.time} timeKey={resultData?.key} />
+      <Footer time={resultData?.time} />
     </div>
   );
 }

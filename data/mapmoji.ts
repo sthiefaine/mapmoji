@@ -8,6 +8,8 @@ interface Column {
   space: number;
   lat: string;
   long: string;
+  uv_index_clear_sky?: number;
+  temperature_2m?: number;
 }
 
 interface Row {
@@ -17,10 +19,15 @@ interface Row {
 
 export type MapMojiType = Row[];
 
+export type MapMojiForDayType = {
+  time: string;
+  object: MapMojiType;
+};
+
 export type Country = {
   name: string;
   emoji?: string;
-  mapData: any;
+  mapData: MapMojiType;
   timeZone: string;
   updateHours: string[];
   countryCodeLanguage: string;

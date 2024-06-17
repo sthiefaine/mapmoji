@@ -15,8 +15,18 @@ model Weather {
   id        Int      @id @default(autoincrement())
   country   String @unique
   time      DateTime
-  key       String 
   object    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model WeatherForDay {
+  id        Int      @id @default(autoincrement())
+  country   String
+  time      DateTime
+  object    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([country, time])
 }

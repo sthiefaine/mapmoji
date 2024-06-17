@@ -29,13 +29,11 @@ export async function addMapMoji(mapMoji: MapMojiType, country: string) {
       where: { country: country.toLowerCase() },
       update: {
         time: today,
-        key: mapKey,
         object: JSON.stringify(mapMoji),
       },
       create: {
         country: country.toLowerCase(),
         time: today,
-        key: mapKey,
         object: JSON.stringify(mapMoji),
       },
     });

@@ -1,7 +1,6 @@
 "use server";
 import { MapMojiType, countriesList, notFoundCountry } from "@/data/mapmoji";
 import { getMapMoji } from "@/app/actions/weather/weather.actions";
-import { Country as CountryType } from "@/data/mapmoji";
 import styles from "@/app/page.module.css";
 import { Footer } from "@/components/footer/footer";
 import { Main } from "@/components/main/main";
@@ -23,9 +22,9 @@ type CountryParams = {
 export default async function Country({ params }: { params: CountryParams }) {
   const { countryName } = params;
 
-  const mapData: MapMojiType = countriesList.find(
-    (country) => country.name.toLowerCase() === countryName
-  )?.mapData;
+  const mapData: MapMojiType =
+    countriesList.find((country) => country.name.toLowerCase() === countryName)
+      ?.mapData ?? notFoundCountry.mapData;
 
   const country = countriesList.find(
     (country) => country.name.toLowerCase() === countryName
@@ -46,7 +45,7 @@ export default async function Country({ params }: { params: CountryParams }) {
         time={resultData?.time}
         country={country ?? notFoundCountry}
       />
-      <Footer time={resultData?.time} timeKey={resultData?.key} />
+      <Footer time={resultData?.time} />
     </div>
   );
 }

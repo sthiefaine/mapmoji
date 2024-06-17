@@ -1,3 +1,33 @@
+interface HourlyUnits {
+  time: string;
+  temperature_2m: string;
+  is_day: string;
+  weather_code: string;
+  uv_index: string;
+  uv_index_clear_sky: string;
+}
+
+interface HourlyData {
+  time: string[];
+  temperature_2m: number[];
+  is_day: number[];
+  weather_code: number[];
+  uv_index: number[];
+  uv_index_clear_sky: number[];
+}
+
+export interface WeatherDataForDay {
+  latitude: number;
+  longitude: number;
+  generationtime_ms: number;
+  utc_offset_seconds: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  elevation: number;
+  hourly_units: HourlyUnits;
+  hourly: HourlyData;
+}
+
 interface WeatherUnits {
   time: string;
   interval: string;
@@ -14,18 +44,20 @@ interface WeatherUnits {
 }
 
 interface CurrentWeatherData {
-  time: string;
-  interval: number;
-  temperature_2m: number;
-  relative_humidity_2m: number;
+  time?: string;
+  interval?: number;
+  temperature_2m?: number;
+  relative_humidity_2m?: number;
   is_day: number;
-  precipitation: number;
-  rain: number;
-  showers: number;
-  snowfall: number;
+  precipitation?: number;
+  rain?: number;
+  showers?: number;
+  snowfall?: number;
   weather_code: number;
-  cloud_cover: number;
-  wind_speed_10m: number;
+  cloud_cover?: number;
+  wind_speed_10m?: number;
+  uv_index?: number;
+  uv_index_clear_sky?: number;
 }
 
 export interface WeatherData {
@@ -40,13 +72,9 @@ export interface WeatherData {
   current: CurrentWeatherData;
 }
 
-export function getWeatherEmoji(weatherData: WeatherData) {
-  const isDay = weatherData.current.is_day;
-  const weatherCode = weatherData.current.weather_code;
-  const cloudCover = weatherData.current.cloud_cover;
-  const rain = weatherData.current.rain;
-  const showers = weatherData.current.showers;
-  const snowfall = weatherData.current.snowfall;
+export function getWeatherEmoji(currentWeatherData: CurrentWeatherData) {
+  const isDay = currentWeatherData.is_day;
+  const weatherCode = currentWeatherData.weather_code;
 
   const weatherEmojis: {
     [key: number]: { emoji: string; description: string };
@@ -154,6 +182,8 @@ export const weatherResultMock: WeatherData = {
     weather_code: 3,
     cloud_cover: 100,
     wind_speed_10m: 4.1,
+    uv_index: 0,
+    uv_index_clear_sky: 0,
   },
 };
 
