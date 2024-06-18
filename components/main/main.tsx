@@ -26,14 +26,15 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
     hour: "2-digit",
     minute: "2-digit",
   }).format(currentTime);
+
   const getHour = getLocalTime.split(":")[0];
+  const indexHour = selectedHour ?? parseInt(getHour);
 
   useEffect(() => {
     if (emojiMaps.length > 0) {
-      const indexHour = selectedHour ?? parseInt(getHour);
       setEmojiMap(emojiMaps[indexHour] ?? country?.mapData);
     }
-  }, [selectedHour, emojiMaps, country, getHour]);
+  }, [selectedHour, emojiMaps, country, getHour, indexHour]);
 
   const handleShareClick = () => {
     const weatherElement = document.getElementById("weather-section");
@@ -55,7 +56,11 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
       blackContext.drawImage(canvas, 0, 0);
 
       const resizedCanvas = document.createElement("canvas");
-      resizedCanvas.width = 400;
+      const countrySpecialSize = 350;
+      resizedCanvas.width =
+        country.name.toLocaleLowerCase() === "france"
+          ? countrySpecialSize
+          : 400;
       resizedCanvas.height = 500;
       const resizedContext = resizedCanvas.getContext("2d");
       if (!resizedContext) {
@@ -73,14 +78,8 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
       const countryText =
         capitalizeFirstLetter(country?.name ?? "") + " " + country?.emoji;
 
-      const getLocalTime = new Intl.DateTimeFormat("fr-FR", {
-        timeZone: country?.timeZone ?? "UTC",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(currentTime);
-
       // Draw the text
-      const text = `${countryText}, ${getLocalTime}`;
+      const text = `${countryText}, ${indexHour.toString().padStart(2, "0")}h`;
       const textWidth = resizedContext.measureText(text).width;
       const x = (resizedCanvas.width - textWidth) / 2;
 

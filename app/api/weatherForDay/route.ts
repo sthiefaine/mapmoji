@@ -126,11 +126,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
     for (const country of countriesList) {
       const isUpdateHour = isUpdateHourForCountry(country);
-      if (
-        isUpdateHour === 0 ||
-        isUpdateHour === 12 ||
-        forceUpdate === process.env.FORCE_UPDATE
-      ) {
+      if (isUpdateHour || forceUpdate === process.env.FORCE_UPDATE) {
         const updatedMap = await getEmoji(country);
 
         for (const updatedMapForDay of updatedMap) {
