@@ -147,7 +147,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
         }
 
         updatedAnyCountry = true;
-        revalidatePath(`/country/${country.name.toLowerCase()}`);
+        revalidatePath(`/country/${country.name.toLowerCase()}`, "page");
       }
     }
 

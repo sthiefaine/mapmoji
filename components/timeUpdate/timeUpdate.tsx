@@ -28,6 +28,8 @@ export function TimeUpdate({
     selectedHour?.toString().padStart(2, "0") ?? getLocalTime.split(":")[0];
 
   useEffect(() => {
+    console.log("country", country.name);
+    console.log("timesList", timesList);
     if (!country || !getHour) return;
     const currentHour = document.getElementById(getHour);
     if (currentHour) {

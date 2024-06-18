@@ -20,6 +20,7 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
   const [emojiMap, setEmojiMap] = useState<MapMojiType>([]);
 
   const currentTime = new Date();
+
   const getLocalTime = new Intl.DateTimeFormat("fr-FR", {
     timeZone: country?.timeZone ?? "UTC",
     hour: "2-digit",
