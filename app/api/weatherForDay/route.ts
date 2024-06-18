@@ -20,10 +20,16 @@ const isUpdateHourForCountry = (country: Country) => {
   const localTimeString = formatter.format(time);
   const [localHour, localMinute] = localTimeString.split(":").map(Number);
 
-  return (
-    (localHour === 0 && localMinute <= 5) ||
-    (localHour === 12 && localMinute <= 40)
-  );
+  let result = null;
+
+  if (country.updateHours.includes(localHour.toString())) {
+    result = localHour;
+  }
+  if (localHour === 0) {
+    result = 0;
+  }
+
+  return result;
 };
 
 const getEmoji = async (country: Country) => {
@@ -119,8 +125,10 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
   try {
     for (const country of countriesList) {
+      const isUpdateHour = isUpdateHourForCountry(country);
       if (
-        isUpdateHourForCountry(country) ||
+        isUpdateHour === 0 ||
+        isUpdateHour === 12 ||
         forceUpdate === process.env.FORCE_UPDATE
       ) {
         const updatedMap = await getEmoji(country);
@@ -128,10 +136,11 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
         for (const updatedMapForDay of updatedMap) {
           const newMapmoji = await addMapMojiForDay(
             updatedMapForDay,
-            country.name
+            country.name,
+            isUpdateHour
           );
           if (!newMapmoji.success) {
-            return new NextResponse(`error with: ${country}`, {
+            return new NextResponse(`error with: ${country.name}`, {
               status: 500,
             });
           }

@@ -34,8 +34,8 @@ export type Country = {
   countryCode: string;
 };
 
-const southUpdateHours: string[] = ["5", "7", "9", "11", "15", "17", "19"];
-const northUpdateHours: string[] = ["6", "8", "11", "15", "17", "19", "22"];
+const southUpdateHours: string[] = ["6", "12", "16"];
+const northUpdateHours: string[] = ["6", "12", "16"];
 
 export const notFoundCountry: Country = {
   name: "notFound",

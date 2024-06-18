@@ -12,11 +12,11 @@ export async function getMapMojiForDay(country: string) {
 
 export async function addMapMojiForDay(
   mapMoji: MapMojiForDayType,
-  country: string
+  country: string,
+  isUpdateHour: number | null
 ) {
   const mapMojiForDay = mapMoji.object;
   const today = new Date(mapMoji.time + "Z");
-
   const yesterday = new Date(new Date(today).setDate(today.getDate() - 1));
 
   try {
@@ -24,7 +24,7 @@ export async function addMapMojiForDay(
       where: {
         country_time: {
           country: country.toLowerCase(),
-          time: yesterday,
+          time: isUpdateHour === 0 ? yesterday : today,
         },
       },
       update: {
