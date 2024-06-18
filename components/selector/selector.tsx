@@ -59,6 +59,15 @@ export function Selector({
 
   return (
     <div className={styles.selector}>
+      {filteredCountries.length === 0 && (
+        <button
+          className={`${styles.button}`}
+          onClick={() => setSearchValue("")}
+        >
+          🏴‍☠️ No result found
+        </button>
+      )}
+
       {filteredCountries.map((c, index) => {
         return (
           <Link

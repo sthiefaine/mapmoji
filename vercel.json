@@ -2,10 +2,6 @@
   "crons": [
     {
       "path": "/api/weatherForDay",
-      "schedule": "30 * * * *"
-    },
-    {
-      "path": "/api/weatherForDay",
       "schedule": "0 * * * *"
     }
   ]

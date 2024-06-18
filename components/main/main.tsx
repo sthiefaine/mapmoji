@@ -56,12 +56,12 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
       blackContext.drawImage(canvas, 0, 0);
 
       const resizedCanvas = document.createElement("canvas");
-      const countrySpecialSize = 350;
+      const countrySpecialSize = 300;
       resizedCanvas.width =
         country.name.toLocaleLowerCase() === "france"
           ? countrySpecialSize
           : 400;
-      resizedCanvas.height = 500;
+      resizedCanvas.height = 450;
       const resizedContext = resizedCanvas.getContext("2d");
       if (!resizedContext) {
         return;
@@ -79,7 +79,7 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
         capitalizeFirstLetter(country?.name ?? "") + " " + country?.emoji;
 
       // Draw the text
-      const text = `${countryText}, ${indexHour.toString().padStart(2, "0")}h`;
+      const text = `${countryText} ${indexHour.toString().padStart(2, "0")}h`;
       const textWidth = resizedContext.measureText(text).width;
       const x = (resizedCanvas.width - textWidth) / 2;
 
@@ -129,7 +129,7 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
   };
 
   return (
-    <>
+    <main className={styles.main}>
       <TimeUpdate
         timesList={timesList}
         country={country}
@@ -147,6 +147,6 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
           handleShareClick={handleShareClick}
         />
       </section>
-    </>
+    </main>
   );
 }
