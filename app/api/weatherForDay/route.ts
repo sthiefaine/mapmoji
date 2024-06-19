@@ -1,3 +1,4 @@
+export const maxDuration = 40;
 import { NextRequest, NextResponse } from "next/server";
 import { WeatherDataForDay, getWeatherEmoji } from "@/helpers/open-meteo";
 import { revalidatePath } from "next/cache";
@@ -11,7 +12,7 @@ import { addMapMojiForDay } from "@/app/actions/weather/weatherForDay.actions";
 
 const isUpdateHourForCountry = (country: Country) => {
   const time = new Date();
-  const formatter = new Intl.DateTimeFormat(country.countryCodeLanguage, {
+  const formatter = new Intl.DateTimeFormat("fr-FR", {
     timeZone: country.timeZone ?? "UTC",
     hour: "2-digit",
     minute: "2-digit",
@@ -22,6 +23,13 @@ const isUpdateHourForCountry = (country: Country) => {
 
   let result = null;
 
+  console.log(
+    "update hour",
+    country.name,
+    localHour,
+    country.updateHours,
+    country.updateHours.includes(localHour.toString())
+  );
   if (country.updateHours.includes(localHour.toString())) {
     result = localHour;
   }
@@ -122,12 +130,15 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     }
   }
 
-  let updatedAnyCountry = false;
-
   try {
+    let updatedAnyCountry = false;
     for (const country of countriesList) {
-      const isUpdateHour = isUpdateHourForCountry(country);
-      if (isUpdateHour || forceUpdate === process.env.FORCE_UPDATE) {
+      let isUpdateHour = null;
+      isUpdateHour = isUpdateHourForCountry(country);
+      if (
+        typeof isUpdateHour === "number" ||
+        forceUpdate === process.env.FORCE_UPDATE
+      ) {
         const updatedMap = await getEmoji(country);
 
         for (const updatedMapForDay of updatedMap) {
@@ -136,6 +147,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
             country.name,
             isUpdateHour
           );
+
           if (!newMapmoji.success) {
             return new NextResponse(`error with: ${country.name}`, {
               status: 500,

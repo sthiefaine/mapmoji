@@ -20,6 +20,10 @@ export async function addMapMojiForDay(
   const today = new Date(mapMoji.time + "Z");
   const yesterday = new Date(new Date(today).setDate(today.getDate() - 1));
 
+  console.log("addMapMojiForDay ACTION", country, isUpdateHour);
+  console.log("addMapMojiForDay ACTION TODAY", today);
+  console.log("addMapMojiForDay ACTION YESTERDAY", yesterday);
+
   try {
     const result = await prisma.weatherForDay.upsert({
       where: {
@@ -40,7 +44,7 @@ export async function addMapMojiForDay(
     });
 
     if (result) {
-      revalidatePath(`/country/${country.toLowerCase()}`, "page");
+      revalidatePath(`/country/${country.toLowerCase()}`);
       return {
         success: true,
       };
