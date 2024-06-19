@@ -10,7 +10,7 @@ export async function generateStaticParams() {
   const items = countriesList;
 
   return items.map((item) => ({
-    countryName: item.name.toLocaleLowerCase(),
+    countryName: item.name.toLowerCase(),
   }));
 }
 

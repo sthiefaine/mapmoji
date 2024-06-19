@@ -78,6 +78,7 @@ const getEmoji = async (country: Country) => {
                     weather_code: weather.hourly.weather_code[hourIndex],
                   };
                   const weatherEmoji = getWeatherEmoji(currentWeatherData);
+
                   updatedMapForDay[hourIndex].time = time;
                   updatedMapForDay[hourIndex].object[rowIndex].columns[
                     colIndex
