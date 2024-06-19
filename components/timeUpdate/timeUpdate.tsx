@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./timeUpdate.module.css";
 
 import { Country } from "@/data/mapmoji";
@@ -18,26 +18,30 @@ export function TimeUpdate({
   selectedHour,
   setSelectedHour,
 }: TimeUpdateProps) {
-  const currentTime = new Date();
-  const getLocalTime = new Intl.DateTimeFormat("fr-FR", {
-    timeZone: country?.timeZone ?? "UTC",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(currentTime);
-  const getHour =
-    selectedHour?.toString().padStart(2, "0") ?? getLocalTime.split(":")[0];
+  const [currentHour, setCurrentHour] = useState<number>(selectedHour ?? 0);
 
   useEffect(() => {
-    if (!country || !getHour) return;
-    const currentHour = document.getElementById(getHour);
-    if (currentHour) {
-      currentHour.scrollIntoView({
+    const currentTime = new Date();
+    const getLocalTime = new Intl.DateTimeFormat("fr-FR", {
+      timeZone: country?.timeZone ?? "UTC",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(currentTime);
+    const getHour =
+      selectedHour?.toString().padStart(2, "0") ?? getLocalTime.split(":")[0];
+    setCurrentHour(parseInt(getHour));
+  }, [selectedHour, country]);
+
+  useEffect(() => {
+    const scrollToHour = document.getElementById(currentHour.toString());
+    if (scrollToHour) {
+      scrollToHour.scrollIntoView({
         behavior: "smooth",
         block: "center",
         inline: "center",
       });
     }
-  }, [country, getHour]);
+  }, [currentHour]);
 
   return (
     <div className={styles.timeline}>
@@ -49,7 +53,9 @@ export function TimeUpdate({
             id={localTimeHour}
             key={time.toLocaleDateString() + index}
             className={`${styles.hour} ${
-              getHour === localTimeHour ? styles.current : ""
+              currentHour.toString().padStart(2, "0") === localTimeHour
+                ? styles.current
+                : ""
             }`}
           >
             {localTimeHour}h

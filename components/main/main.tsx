@@ -17,6 +17,7 @@ type MainProps = {
 
 export function Main({ emojiMaps, timesList, country }: MainProps) {
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
+  const [indexHour, setIndexHour] = useState<number>(0);
   const [emojiMap, setEmojiMap] = useState<MapMojiType>([]);
 
   const currentTime = new Date();
@@ -28,7 +29,13 @@ export function Main({ emojiMaps, timesList, country }: MainProps) {
   }).format(currentTime);
 
   const getHour = getLocalTime.split(":")[0];
-  const indexHour = selectedHour ?? parseInt(getHour);
+
+  useEffect(() => {
+    if (selectedHour === null) {
+      setSelectedHour(parseInt(getHour));
+    }
+    setIndexHour(selectedHour ?? parseInt(getHour));
+  }, [getHour, selectedHour]);
 
   useEffect(() => {
     if (emojiMaps.length > 0) {
