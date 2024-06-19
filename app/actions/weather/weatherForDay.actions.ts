@@ -1,6 +1,7 @@
 "use server";
 import { MapMojiForDayType } from "@/data/mapmoji";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function getMapMojiForDay(country: string) {
   const mapMoji = await prisma.weatherForDay.findMany({
@@ -39,6 +40,7 @@ export async function addMapMojiForDay(
     });
 
     if (result) {
+      revalidatePath(`/country/${country.toLowerCase()}`, "page");
       return {
         success: true,
       };
