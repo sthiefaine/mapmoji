@@ -12,16 +12,22 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     forecast_days: "1",
   };
 
-  // https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.longitude}&timezone=${params.timezone}&forecast_days=${params.forecast_days}
+  if (process.env.NODE_ENV === "development") {
+    // https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.longitude}&timezone=${params.timezone}&forecast_days=${params.forecast_days}
 
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&current=${params.current}${params.uv}`;
-  const url2 = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.current}${params.uv}&timezone=${params.timezone}&forecast_days=${params.forecast_days}`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&current=${params.current}${params.uv}`;
+    const url2 = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.current}${params.uv}&timezone=${params.timezone}&forecast_days=${params.forecast_days}`;
 
-  const weather = await fetch(url2, { cache: "no-store" }).then((res) =>
-    res.json()
-  );
+    const weather = await fetch(url2, { cache: "no-store" }).then((res) =>
+      res.json()
+    );
 
-  return new NextResponse(JSON.stringify(weather), {
-    status: 200,
+    return new NextResponse(JSON.stringify(weather), {
+      status: 200,
+    });
+  }
+
+  return new Response("Unauthorized", {
+    status: 401,
   });
 };

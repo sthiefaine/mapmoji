@@ -23,13 +23,14 @@ const isUpdateHourForCountry = (country: Country) => {
 
   let result = null;
 
-  console.log(
+  // in case of debug
+  /*   console.log(
     "update hour",
     country.name,
     localHour,
-    country.updateHours,
-    country.updateHours.includes(localHour.toString())
-  );
+    country.updateHours
+  ); */
+
   if (country.updateHours.includes(localHour.toString())) {
     result = localHour;
   }

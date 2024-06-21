@@ -5,10 +5,9 @@ import Link from "next/link";
 
 type FooterProps = {
   time?: Date;
-  timeKey?: string;
 };
 
-export function Footer({ time, timeKey }: FooterProps) {
+export function Footer({ time }: FooterProps) {
   return (
     <footer className={styles.footer}>
       <div className={styles.element}>
@@ -20,7 +19,7 @@ export function Footer({ time, timeKey }: FooterProps) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Made by Thiefaine
+            💻 Thiefaine
           </Link>
         </p>
         <p className={styles.link}>
