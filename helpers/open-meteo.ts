@@ -16,6 +16,11 @@ interface HourlyData {
   uv_index_clear_sky: number[];
 }
 
+interface DailyData {
+  sunrise: string[];
+  sunset: string[];
+}
+
 export interface WeatherDataForDay {
   latitude: number;
   longitude: number;
@@ -26,6 +31,7 @@ export interface WeatherDataForDay {
   elevation: number;
   hourly_units: HourlyUnits;
   hourly: HourlyData;
+  daily: DailyData;
 }
 
 interface WeatherUnits {
@@ -58,6 +64,8 @@ interface CurrentWeatherData {
   wind_speed_10m?: number;
   uv_index?: number;
   uv_index_clear_sky?: number;
+  sunrise?: string;
+  sunset?: string;
 }
 
 export interface WeatherData {
@@ -72,9 +80,30 @@ export interface WeatherData {
   current: CurrentWeatherData;
 }
 
-export function getWeatherEmoji(currentWeatherData: CurrentWeatherData) {
-  const isDay = currentWeatherData.is_day;
+function isDayTime(time: string, sunrise?: string, sunset?: string): boolean {
+  if (!sunrise || !sunset) return true; // Fallback to API's is_day if no sunrise/sunset data
+  
+  const currentTime = new Date(time);
+  const sunriseTime = new Date(sunrise);
+  const sunsetTime = new Date(sunset);
+  
+  return currentTime >= sunriseTime && currentTime <= sunsetTime;
+}
+
+export function getWeatherEmoji(currentWeatherData: CurrentWeatherData, country?: string) {
+  const isDay = currentWeatherData.time && currentWeatherData.sunrise && currentWeatherData.sunset
+    ? isDayTime(currentWeatherData.time, currentWeatherData.sunrise, currentWeatherData.sunset)
+    : currentWeatherData.is_day === 1;
   const weatherCode = currentWeatherData.weather_code;
+
+  if (country === 'france') {
+    console.log('=== FRANCE DEBUG ===');
+    console.log('Time:', currentWeatherData.time);
+    console.log('Sunrise:', currentWeatherData.sunrise);
+    console.log('Sunset:', currentWeatherData.sunset);
+    console.log('Is Day:', isDay);
+    console.log('==================');
+  }
 
   const weatherEmojis: {
     [key: number]: { emoji: string; description: string };

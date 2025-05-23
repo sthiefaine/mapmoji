@@ -18,18 +18,27 @@ export async function addMapMojiForDay(
 ) {
   const mapMojiForDay = mapMoji.object;
   const today = new Date(mapMoji.time + "Z");
-  const yesterday = new Date(new Date(today).setDate(today.getDate() - 1));
+  
+  // Vérifier si les données contiennent les informations de lever/coucher du soleil
+  const hasSunData = mapMojiForDay.some((row) => 
+    row.columns.some((col) => 
+      col.sunrise && col.sunset
+    )
+  );
+
+  if (!hasSunData) {
+    console.error('Missing sunrise/sunset data for country:', country);
+  }
 
   try {
     const result = await prisma.weatherForDay.upsert({
       where: {
         country_time: {
           country: country.toLowerCase(),
-          time: isUpdateHour === 0 ? yesterday : today,
+          time: today,
         },
       },
       update: {
-        time: today,
         object: JSON.stringify(mapMojiForDay),
       },
       create: {
@@ -46,6 +55,7 @@ export async function addMapMojiForDay(
       };
     }
   } catch (error) {
+    console.error('Error saving weather data:', error);
     return {
       success: false,
     };

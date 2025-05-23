@@ -55,6 +55,8 @@ const getEmoji = async (country: Country) => {
           long: col.long,
           uv_index_clear_sky: 0,
           temperature_2m: 0,
+          sunrise: "",
+          sunset: "",
         })),
       })),
     }));
@@ -71,22 +73,44 @@ const getEmoji = async (country: Country) => {
               longitude: long,
               uv: "uv_index,uv_index_clear_sky,",
               current: "temperature_2m,is_day,weather_code,",
+              daily: "sunrise,sunset",
               timezone: country.timeZone ?? "UTC",
               forecast_days: "1",
             };
 
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.current}${params.uv}&timezone=${params.timezone}&forecast_days=${params.forecast_days}`;
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.current}${params.uv}&daily=${params.daily}&timezone=${params.timezone}&forecast_days=${params.forecast_days}`;
             if (lat && long) {
               const weather: WeatherDataForDay = await fetch(url, {
                 cache: "no-store",
               }).then((res) => res.json());
+
+              if (
+                !weather.hourly ||
+                !weather.hourly.time ||
+                !weather.daily ||
+                !weather.daily.sunrise ||
+                !weather.daily.sunset
+              ) {
+                console.error("Invalid weather data structure:", weather);
+                return;
+              }
+
+              const sunrise = weather.daily.sunrise[0];
+              const sunset = weather.daily.sunset[0];
+
               await weather.hourly.time.forEach(
                 (time: string, hourIndex: number) => {
                   const currentWeatherData = {
+                    time: time,
                     is_day: weather.hourly.is_day[hourIndex],
                     weather_code: weather.hourly.weather_code[hourIndex],
+                    sunrise: sunrise,
+                    sunset: sunset,
                   };
-                  const weatherEmoji = getWeatherEmoji(currentWeatherData);
+                  const weatherEmoji = getWeatherEmoji(
+                    currentWeatherData,
+                    country.name.toLowerCase()
+                  );
 
                   updatedMapForDay[hourIndex].time = time;
                   updatedMapForDay[hourIndex].object[rowIndex].columns[
@@ -99,6 +123,12 @@ const getEmoji = async (country: Country) => {
                   updatedMapForDay[hourIndex].object[rowIndex].columns[
                     colIndex
                   ].temperature_2m = weather.hourly.temperature_2m[hourIndex];
+                  updatedMapForDay[hourIndex].object[rowIndex].columns[
+                    colIndex
+                  ].sunrise = sunrise;
+                  updatedMapForDay[hourIndex].object[rowIndex].columns[
+                    colIndex
+                  ].sunset = sunset;
                 }
               );
             }

@@ -10,6 +10,8 @@ interface Column {
   long: string;
   uv_index_clear_sky?: number;
   temperature_2m?: number;
+  sunrise?: string;
+  sunset?: string;
 }
 
 interface Row {
