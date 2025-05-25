@@ -1,4 +1,5 @@
-export const maxDuration = 40;
+export const maxDuration = 300;
+
 import { NextRequest, NextResponse } from "next/server";
 import { WeatherDataForDay, getWeatherEmoji } from "@/helpers/open-meteo";
 import { revalidatePath } from "next/cache";
@@ -41,6 +42,8 @@ const isUpdateHourForCountry = (country: Country) => {
   return result;
 };
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 const getEmoji = async (country: Country) => {
   let updatedMapForDay: MapMojiForDayType[] = Array(24)
     .fill(null)
@@ -61,82 +64,79 @@ const getEmoji = async (country: Country) => {
       })),
     }));
 
-  await Promise.all(
-    country.mapData.map(async (row: MapMojiType[0], rowIndex) => {
-      await Promise.all(
-        row.columns.map(
-          async (col: MapMojiType[0]["columns"][0], colIndex: number) => {
-            const lat = col.lat;
-            const long = col.long;
-            const params = {
-              latitude: lat,
-              longitude: long,
-              uv: "uv_index,uv_index_clear_sky,",
-              current: "temperature_2m,is_day,weather_code,",
-              daily: "sunrise,sunset",
-              timezone: country.timeZone ?? "UTC",
-              forecast_days: "1",
-            };
+  for (const row of country.mapData) {
+    for (const col of row.columns) {
+      const lat = col.lat;
+      const long = col.long;
+      if (lat && long) {
+        const params = {
+          latitude: lat,
+          longitude: long,
+          uv: "uv_index,uv_index_clear_sky,",
+          current: "temperature_2m,is_day,weather_code,",
+          daily: "sunrise,sunset",
+          timezone: country.timeZone ?? "UTC",
+          forecast_days: "1",
+        };
 
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.current}${params.uv}&daily=${params.daily}&timezone=${params.timezone}&forecast_days=${params.forecast_days}`;
-            if (lat && long) {
-              const weather: WeatherDataForDay = await fetch(url, {
-                cache: "no-store",
-              }).then((res) => res.json());
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.current}${params.uv}&daily=${params.daily}&timezone=${params.timezone}&forecast_days=${params.forecast_days}`;
 
-              if (
-                !weather.hourly ||
-                !weather.hourly.time ||
-                !weather.daily ||
-                !weather.daily.sunrise ||
-                !weather.daily.sunset
-              ) {
-                console.error("Invalid weather data structure:", weather);
-                return;
-              }
+        try {
+          const weather: WeatherDataForDay = await fetch(url, {
+            cache: "no-store",
+          }).then((res) => res.json());
 
-              const sunrise = weather.daily.sunrise[0];
-              const sunset = weather.daily.sunset[0];
-
-              await weather.hourly.time.forEach(
-                (time: string, hourIndex: number) => {
-                  const currentWeatherData = {
-                    time: time,
-                    is_day: weather.hourly.is_day[hourIndex],
-                    weather_code: weather.hourly.weather_code[hourIndex],
-                    sunrise: sunrise,
-                    sunset: sunset,
-                  };
-                  const weatherEmoji = getWeatherEmoji(
-                    currentWeatherData,
-                    country.name.toLowerCase()
-                  );
-
-                  updatedMapForDay[hourIndex].time = time;
-                  updatedMapForDay[hourIndex].object[rowIndex].columns[
-                    colIndex
-                  ].emoji = weatherEmoji?.emoji ?? col.emoji;
-                  updatedMapForDay[hourIndex].object[rowIndex].columns[
-                    colIndex
-                  ].uv_index_clear_sky =
-                    weather.hourly.uv_index_clear_sky[hourIndex];
-                  updatedMapForDay[hourIndex].object[rowIndex].columns[
-                    colIndex
-                  ].temperature_2m = weather.hourly.temperature_2m[hourIndex];
-                  updatedMapForDay[hourIndex].object[rowIndex].columns[
-                    colIndex
-                  ].sunrise = sunrise;
-                  updatedMapForDay[hourIndex].object[rowIndex].columns[
-                    colIndex
-                  ].sunset = sunset;
-                }
-              );
-            }
+          if (
+            !weather.hourly ||
+            !weather.hourly.time ||
+            !weather.daily ||
+            !weather.daily.sunrise ||
+            !weather.daily.sunset
+          ) {
+            console.error("Invalid weather data structure:", weather);
+            continue;
           }
-        )
-      );
-    })
-  );
+
+          const sunrise = weather.daily.sunrise[0];
+          const sunset = weather.daily.sunset[0];
+
+          weather.hourly.time.forEach((time: string, hourIndex: number) => {
+            const currentWeatherData = {
+              time: time,
+              is_day: weather.hourly.is_day[hourIndex],
+              weather_code: weather.hourly.weather_code[hourIndex],
+              sunrise: sunrise,
+              sunset: sunset,
+            };
+            const weatherEmoji = getWeatherEmoji(
+              currentWeatherData,
+              country.name.toLowerCase()
+            );
+
+            updatedMapForDay[hourIndex].time = time;
+            updatedMapForDay[hourIndex].object[country.mapData.indexOf(row)].columns[
+              row.columns.indexOf(col)
+            ].emoji = weatherEmoji?.emoji ?? col.emoji;
+            updatedMapForDay[hourIndex].object[country.mapData.indexOf(row)].columns[
+              row.columns.indexOf(col)
+            ].uv_index_clear_sky = weather.hourly.uv_index_clear_sky[hourIndex];
+            updatedMapForDay[hourIndex].object[country.mapData.indexOf(row)].columns[
+              row.columns.indexOf(col)
+            ].temperature_2m = weather.hourly.temperature_2m[hourIndex];
+            updatedMapForDay[hourIndex].object[country.mapData.indexOf(row)].columns[
+              row.columns.indexOf(col)
+            ].sunrise = sunrise;
+            updatedMapForDay[hourIndex].object[country.mapData.indexOf(row)].columns[
+              row.columns.indexOf(col)
+            ].sunset = sunset;
+          });
+          await delay(100);
+        } catch (error) {
+          console.error(`Error fetching weather data for coordinates ${lat},${long}:`, error);
+        }
+      }
+    }
+  }
 
   return updatedMapForDay as MapMojiForDayType[];
 };
