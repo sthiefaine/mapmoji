@@ -31,7 +31,17 @@ export default async function Home() {
           .map((re) => JSON.parse(re.object))
       : [countryMapData];
 
-  const timesList = resultData.map((time) => time.time);
+  // Filtrer pour ne prendre que les données d'aujourd'hui
+  const today = new Date();
+  const todayString = today.toISOString().split('T')[0]; // Format YYYY-MM-DD
+  
+  const timesList = resultData
+    .filter((item) => {
+      const itemDate = new Date(item.time);
+      const itemDateString = itemDate.toISOString().split('T')[0];
+      return itemDateString === todayString;
+    })
+    .map((time) => time.time);
 
   return (
     <div className={styles.app}>

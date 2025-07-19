@@ -10,6 +10,7 @@ import {
   countriesList,
 } from "@/data/mapmoji";
 import { addMapMojiForDay } from "@/app/actions/weather/weatherForDay.actions";
+import prisma from "@/lib/prisma";
 
 const isUpdateHourForCountry = (country: Country) => {
   const time = new Date();
@@ -43,6 +44,29 @@ const isUpdateHourForCountry = (country: Country) => {
 };
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Fonction pour supprimer les anciennes données météo
+const deleteOldWeatherData = async () => {
+  try {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
+
+    const deletedCount = await prisma.weatherForDay.deleteMany({
+      where: {
+        time: {
+          lt: yesterday
+        }
+      }
+    });
+
+    console.log(`Suppression de ${deletedCount.count} anciennes entrées météo`);
+    return deletedCount.count;
+  } catch (error) {
+    console.error('Erreur lors de la suppression des anciennes données:', error);
+    return 0;
+  }
+};
 
 const getEmoji = async (country: Country) => {
   let updatedMapForDay: MapMojiForDayType[] = Array(24)
@@ -162,6 +186,8 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
   }
 
   try {
+    await deleteOldWeatherData();
+    
     let updatedAnyCountry = false;
     for (const country of countriesList) {
       let isUpdateHour = null;
